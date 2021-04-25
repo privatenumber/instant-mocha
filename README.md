@@ -5,7 +5,7 @@
 <h1 align="center">
   instant-mocha
   <br>
-  <a href="https://npm.im/instant-mocha"><img src="https://badgen.net/npm/v/instant-mocha"></a> <a href="https://npm.im/instant-mocha"><img src="https://badgen.net/npm/dm/instant-mocha"></a> <a href="https://packagephobia.now.sh/result?p=instant-mocha"><img src="https://packagephobia.now.sh/badge?p=instant-mocha"></a>
+  <a href="https://npm.im/instant-mocha"><img src="https://badgen.net/npm/v/instant-mocha"></a> <!--<a href="https://npm.im/instant-mocha"><img src="https://badgen.net/npm/dm/instant-mocha"></a> --><a href="https://packagephobia.now.sh/result?p=instant-mocha"><img src="https://packagephobia.now.sh/badge?p=instant-mocha"></a>
 </h1>
 
 Build tests with Webpack and run them with Mocha in one command
