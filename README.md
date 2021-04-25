@@ -10,6 +10,14 @@
 
 Build tests with Webpack and run them with Mocha in one command
 
+### Features
+- Source-map support
+- Builds and runs in-memory
+- Inherits Mocha CLI
+- Supports Webpack 5 & Mocha 8
+
+_How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) / [mochapack](https://github.com/sysgears/mochapack)?_ Answered in the [FAQ](#how-is-it-different-from-mocha-webpack-or-its-fork-mochapack).
+
 ## 🚀 Install
 ```sh
 npm i -D instant-mocha
@@ -57,10 +65,9 @@ Add [webpackbar](https://github.com/unjs/webpackbar) to your Webpack config.
 
 I made a simpler version that supports both Webpack 4 & 5. Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
-- **Doesn't add another file-watching mechanism** Just relies on Webpack's watcher instead.
-- **Doesn't write to the file-system** Instead, builds are completely in-memory. `mocha-webpack` writes to a temporary hidden directory for Mocha to read from.
+- **Doesn't re-implement another file-watching mechanism** Relies on Webpack's watcher instead.
 - **Loosely coupled with Mocha and Webpack** The API surface interacted with is very narrow so it works with most versions.
-- **Smaller size** Doesn't re-implement anything and is much lighter: [![instant-mocha install size](https://packagephobia.now.sh/badge?p=instant-mocha)](https://packagephobia.now.sh/result?p=instant-mocha) vs [![mocha-webpack install size](https://packagephobia.now.sh/badge?p=mocha-webpack)](https://packagephobia.now.sh/result?p=mocha-webpack)
+- **Smaller size** Reuses a lot from Webpack & Mocha so it's much lighter: [![instant-mocha install size](https://packagephobia.now.sh/badge?p=instant-mocha)](https://packagephobia.now.sh/result?p=instant-mocha) vs [![mocha-webpack install size](https://packagephobia.now.sh/badge?p=mocha-webpack)](https://packagephobia.now.sh/result?p=mocha-webpack)
 
 ## 💼 License
 MIT © Hiroki Osame
