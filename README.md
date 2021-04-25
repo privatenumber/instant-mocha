@@ -29,9 +29,8 @@ Path to the Webpack config.
 #### -w, --watch
 Watch mode. Re-compiles the Webpack build and re-run tests on file-changes.
 
-Supports all options from Mocha CLI.
-
-For more options:
+#### Supports all options from Mocha CLI
+For more info, run:
 ```sh
 instant-mocha --help
 ```
