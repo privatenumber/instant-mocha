@@ -20,15 +20,17 @@ _How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpa
 
 ## 🚀 Install
 ```sh
-npm i -D instant-mocha
+npm i -D mocha webpack instant-mocha
 ```
+
+Note: `webpack` and `mocha` are peer-dependencies so you can provide any version
 
 ## 👨‍🏫 Usage
 ```sh
-instant-mocha --webpack-config <Webpack config path> [test paths...]
+instant-mocha --webpack-config <Webpack config path> [test paths/globs...]
 ```
 
-You can either use [`npx`](https://www.npmjs.com/package/npx) or add it to `package.json` scripts to invoke it. (eg. `npx instant-mocha ...`)
+You can either use [`npx`](https://www.npmjs.com/package/npx) (eg. `npx instant-mocha ...`) or add it to [`package.json` scripts](https://nodejs.dev/learn/the-package-json-guide) (eg. `npm test`) to invoke it. 
 
 ### Options
 #### --webpack-config
