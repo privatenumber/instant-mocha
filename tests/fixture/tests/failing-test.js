@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { add } from '~/index';
+import { add } from '~/add';
 
 it('should add - expect to fail', () => {
 	assert(

@@ -17,6 +17,8 @@ export function createWebpackCompiler(
 		// target: 'node',
 
 		output: {
+			...webpackConfig.output,
+
 			path: '/',
 
 			// https://stackoverflow.com/a/64715069
@@ -25,7 +27,12 @@ export function createWebpackCompiler(
 			// For Node.js env
 			// https://webpack.js.org/configuration/output/#outputglobalobject
 			globalObject: 'this',
+
 			libraryTarget: 'commonjs2',
+
+			// Same as target: 'node' for async loading chunks
+			chunkLoading: 'require',
+			chunkFormat: 'commonjs',
 		},
 	};
 

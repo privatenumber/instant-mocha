@@ -13,7 +13,7 @@ test('running tests', async () => {
 	}).catch(error => error);
 
 	expect(exitCode).toBe(0);
-	expect(stdout.trim()).toMatch('1 passing');
+	expect(stdout).toMatch('1 passing');
 });
 
 test('exit-code on failure', async () => {
@@ -26,7 +26,7 @@ test('exit-code on failure', async () => {
 	}).catch(error => error);
 
 	expect(exitCode).toBe(1);
-	expect(stdout.trim()).toMatch('2 failing');
+	expect(stdout).toMatch('2 failing');
 });
 
 test('custom reporter', async () => {
@@ -41,5 +41,18 @@ test('custom reporter', async () => {
 	}).catch(error => error);
 
 	expect(exitCode).toBe(1);
-	expect(stdout.trim()).toMatch('Custom failure message');
+	expect(stdout).toMatch('Custom failure message');
+});
+
+test('dynamic import', async () => {
+	const { exitCode, stdout } = await execa(instantMocha, [
+		'--webpackConfig',
+		'webpack.config.js',
+		'tests/dynamic-import-test.js',
+	], {
+		cwd: path.resolve('tests/fixture'),
+	}).catch(error => error);
+
+	expect(exitCode).toBe(0);
+	expect(stdout).toMatch('1 passing');
 });
