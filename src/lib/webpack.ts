@@ -63,13 +63,20 @@ export function createWebpackCompiler(
 		const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
 		/* eslint-enable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
 
+		const target = config.target ?? 'web';
 		// @ts-expect-error WP4 accepts functions
 		config.target = function (compiler) {
+			// CJS Chunks
 			new NodeTemplatePlugin().apply(compiler);
 			new ReadFileCompileWasmTemplatePlugin(config.output).apply(compiler);
 			new FunctionModulePlugin(config.output).apply(compiler);
+
+			// Externalize builtins
 			new NodeTargetPlugin().apply(compiler);
-			new LoaderTargetPlugin('node').apply(compiler);
+
+			// Tells loader what the target is
+			// We don't want to influence this
+			new LoaderTargetPlugin(target).apply(compiler);
 		};
 	}
 
