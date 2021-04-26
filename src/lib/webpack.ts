@@ -29,27 +29,32 @@ export function createWebpackCompiler(
 			globalObject: 'this',
 
 			libraryTarget: 'commonjs2',
-
-			// Same as target: 'node' for async loading chunks
-			chunkLoading: 'require',
-			chunkFormat: 'commonjs',
 		},
 	};
 
-	// Externalize Node built-in modules
 	if (webpack.version && webpack.version[0] > '4') {
+		// Externalize Node built-in modules
 		if (!config.externalsPresets) {
 			config.externalsPresets = {};
 		}
 		config.externalsPresets.node = true;
-	} else {
-		if (!config.externals) {
-			config.externals = [];
-		} else if (!Array.isArray(config.externals)) {
-			config.externals = [config.externals];
-		}
 
-		config.externals.push(...Module.builtinModules);
+		// Same as target: 'node' for async loading chunks
+		Object.assign(config.output, {
+			chunkLoading: 'require',
+			chunkFormat: 'commonjs',
+		});
+	} else {
+		/**
+		 * This externalizes Node built-in modules
+		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/node/NodeTargetPlugin.js
+		 *
+		 * And also makes chunks load as CommonJS.
+		 *
+		 * Setting target = 'node' may have implications outside of Webpack (eg. vue-loader)
+		 * so is avoided with WP5 where it's possible to configure chunk formats
+		 */
+		config.target = 'node';
 	}
 
 	const compiler = webpack(config);

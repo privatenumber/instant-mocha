@@ -1,3 +1,4 @@
 {
-	"preset": "es-jest"
+	"preset": "es-jest",
+	"testTimeout": 10000
 }
