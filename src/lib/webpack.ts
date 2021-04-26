@@ -32,7 +32,7 @@ export function createWebpackCompiler(
 		},
 	};
 
-	if (webpack.version && webpack.version[0] > '4') {
+	if (webpack.version?.split('.')[0] > '4') {
 		// Externalize Node built-in modules
 		if (!config.externalsPresets) {
 			config.externalsPresets = {};
@@ -46,15 +46,31 @@ export function createWebpackCompiler(
 		});
 	} else {
 		/**
-		 * This externalizes Node built-in modules
-		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/node/NodeTargetPlugin.js
+		 * Applied when target = 'node'
+		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/WebpackOptionsApply.js#L107
 		 *
-		 * And also makes chunks load as CommonJS.
+		 * Can't add target = 'node' because it can affect other plugins (eg. vue-loader)
 		 *
-		 * Setting target = 'node' may have implications outside of Webpack (eg. vue-loader)
-		 * so is avoided with WP5 where it's possible to configure chunk formats
+		 * These externalize Node.js builtins and makes chunks load in CommonJS
+		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/node/NodeTemplatePlugin.js
 		 */
-		config.target = 'node';
+
+		/* eslint-disable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
+		const LoaderTargetPlugin = require('webpack/lib/LoaderTargetPlugin');
+		const FunctionModulePlugin = require('webpack/lib/FunctionModulePlugin');
+		const NodeTemplatePlugin = require('webpack/lib/node/NodeTemplatePlugin');
+		const ReadFileCompileWasmTemplatePlugin = require('webpack/lib/node/ReadFileCompileWasmTemplatePlugin');
+		const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
+		/* eslint-enable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
+
+		// @ts-expect-error WP4 accepts functions
+		config.target = function (compiler) {
+			new NodeTemplatePlugin().apply(compiler);
+			new ReadFileCompileWasmTemplatePlugin(config.output).apply(compiler);
+			new FunctionModulePlugin(config.output).apply(compiler);
+			new NodeTargetPlugin().apply(compiler);
+			new LoaderTargetPlugin('node').apply(compiler);
+		};
 	}
 
 	const compiler = webpack(config);
