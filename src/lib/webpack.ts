@@ -29,27 +29,55 @@ export function createWebpackCompiler(
 			globalObject: 'this',
 
 			libraryTarget: 'commonjs2',
-
-			// Same as target: 'node' for async loading chunks
-			chunkLoading: 'require',
-			chunkFormat: 'commonjs',
 		},
 	};
 
-	// Externalize Node built-in modules
-	if (webpack.version && webpack.version[0] > '4') {
+	if (webpack.version?.split('.')[0] > '4') {
+		// Externalize Node built-in modules
 		if (!config.externalsPresets) {
 			config.externalsPresets = {};
 		}
 		config.externalsPresets.node = true;
-	} else {
-		if (!config.externals) {
-			config.externals = [];
-		} else if (!Array.isArray(config.externals)) {
-			config.externals = [config.externals];
-		}
 
-		config.externals.push(...Module.builtinModules);
+		// Same as target: 'node' for async loading chunks
+		Object.assign(config.output, {
+			chunkLoading: 'require',
+			chunkFormat: 'commonjs',
+		});
+	} else {
+		/**
+		 * Applied when target = 'node'
+		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/WebpackOptionsApply.js#L107
+		 *
+		 * Can't add target = 'node' because it can affect other plugins (eg. vue-loader)
+		 *
+		 * These externalize Node.js builtins and makes chunks load in CommonJS
+		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/node/NodeTemplatePlugin.js
+		 */
+
+		/* eslint-disable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
+		const LoaderTargetPlugin = require('webpack/lib/LoaderTargetPlugin');
+		const FunctionModulePlugin = require('webpack/lib/FunctionModulePlugin');
+		const NodeTemplatePlugin = require('webpack/lib/node/NodeTemplatePlugin');
+		const ReadFileCompileWasmTemplatePlugin = require('webpack/lib/node/ReadFileCompileWasmTemplatePlugin');
+		const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
+		/* eslint-enable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
+
+		const target = config.target ?? 'web';
+		// @ts-expect-error WP4 accepts functions
+		config.target = function (compiler) {
+			// CJS Chunks
+			new NodeTemplatePlugin().apply(compiler);
+			new ReadFileCompileWasmTemplatePlugin(config.output).apply(compiler);
+			new FunctionModulePlugin(config.output).apply(compiler);
+
+			// Externalize builtins
+			new NodeTargetPlugin().apply(compiler);
+
+			// Tells loader what the target is
+			// We don't want to influence this
+			new LoaderTargetPlugin(target).apply(compiler);
+		};
 	}
 
 	const compiler = webpack(config);
