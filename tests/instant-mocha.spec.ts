@@ -18,8 +18,8 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(exitCode).toBe(0);
 		expect(stdout).toMatch('1 passing');
+		expect(exitCode).toBe(0);
 	});
 
 	test('exit-code on failure', async () => {
@@ -33,8 +33,8 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(exitCode).toBe(1);
 		expect(stdout).toMatch('2 failing');
+		expect(exitCode).toBe(1);
 	});
 
 	test('custom reporter', async () => {
@@ -50,8 +50,8 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(exitCode).toBe(1);
 		expect(stdout).toMatch('Custom failure message');
+		expect(exitCode).toBe(1);
 	});
 
 	test('dynamic import', async () => {
@@ -65,7 +65,7 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(exitCode).toBe(0);
 		expect(stdout).toMatch('1 passing');
+		expect(exitCode).toBe(0);
 	});
 });
