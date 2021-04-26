@@ -8,7 +8,7 @@ const webpack_1 = __importDefault(require("webpack"));
 const aggregate_error_1 = __importDefault(require("aggregate-error"));
 const memfs_1 = require("./memfs");
 function createWebpackCompiler(webpackConfig, testFiles) {
-    var _a;
+    var _a, _b;
     const config = {
         ...webpackConfig,
         entry: testFiles,
@@ -55,13 +55,18 @@ function createWebpackCompiler(webpackConfig, testFiles) {
         const ReadFileCompileWasmTemplatePlugin = require('webpack/lib/node/ReadFileCompileWasmTemplatePlugin');
         const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
         /* eslint-enable @typescript-eslint/no-var-requires,node/global-require,import/no-unresolved */
+        const target = (_b = config.target) !== null && _b !== void 0 ? _b : 'web';
         // @ts-expect-error WP4 accepts functions
         config.target = function (compiler) {
+            // CJS Chunks
             new NodeTemplatePlugin().apply(compiler);
             new ReadFileCompileWasmTemplatePlugin(config.output).apply(compiler);
             new FunctionModulePlugin(config.output).apply(compiler);
+            // Externalize builtins
             new NodeTargetPlugin().apply(compiler);
-            new LoaderTargetPlugin('node').apply(compiler);
+            // Tells loader what the target is
+            // We don't want to influence this
+            new LoaderTargetPlugin(target).apply(compiler);
         };
     }
     const compiler = webpack_1.default(config);
