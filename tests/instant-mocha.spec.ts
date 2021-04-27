@@ -18,7 +18,7 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(stdout).toMatch('1 passing');
+		expect(stdout).toMatch('2 passing');
 		expect(exitCode).toBe(0);
 	});
 
