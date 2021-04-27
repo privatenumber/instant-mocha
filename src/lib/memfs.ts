@@ -23,20 +23,6 @@ sourceMapSupport.install({
 	},
 });
 
-// Patch to support require() calls within test chunks (eg. dynamic-imports)
-const { _load } = Module as typeof NodeModule;
-(Module as typeof NodeModule)._load = function _memoryLoad(request, parent) {
-	try {
-		return Reflect.apply(_load, this, [request, parent]);
-	} catch (error) {
-		try {
-			return mRequire(path.resolve(parent.path, request));
-		} catch {
-			throw error;
-		}
-	}
-};
-
 export const mRequire = (modulePath: string): any => {
 	const virtualModule = new Module(modulePath, module);
 	const moduleSource = mfs.readFileSync(modulePath).toString();
@@ -44,4 +30,31 @@ export const mRequire = (modulePath: string): any => {
 	(virtualModule as NodeModule)._compile(moduleSource, modulePath);
 
 	return virtualModule.exports;
+};
+
+const memWebpackEntry = '/main.js';
+function hasMemFsInCallStack(parentModule) {
+	while (parentModule.id !== memWebpackEntry && parentModule.parent) {
+		parentModule = parentModule.parent;
+	}
+	return parentModule.id === memWebpackEntry;
+}
+
+const isFilePath = /^[./]/;
+
+// Patch to support require() calls within test chunks (eg. dynamic-imports)
+const { _load } = Module as typeof NodeModule;
+(Module as typeof NodeModule)._load = function _memoryLoad(request, parent) {
+	if (hasMemFsInCallStack(parent)) {
+		// Resolve relative memfs path
+		if (isFilePath.test(request)) {
+			return mRequire(path.resolve(parent.path, request));
+		}
+
+		// Resolve node module
+		return Reflect.apply(_load, this, [request, module]);
+	}
+
+	// eslint-disable-next-line prefer-rest-params
+	return Reflect.apply(_load, this, arguments);
 };
