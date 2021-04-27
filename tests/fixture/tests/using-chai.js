@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import { add } from '~/add';
 
 it('should add', () => {
