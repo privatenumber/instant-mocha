@@ -24,15 +24,18 @@
 		"lint": "eslint .",
 		"dev": "esno src/cli.ts",
 		"build": "tsc",
-		"test": "jest tests/*.ts"
+		"test": "jest tests/*.ts && :"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged"
+			"pre-commit": "npm run build && lint-staged"
 		}
 	},
 	"lint-staged": {
-		"*.{js,ts}": "eslint"
+		"*.{js,ts}": [
+			"eslint",
+			"npm test"
+		]
 	},
 	"peerDependencies": {
 		"mocha": "^6.1.4 || ^8.3.2",

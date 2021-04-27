@@ -2,6 +2,8 @@ import webpack from 'webpack';
 import AggregateError from 'aggregate-error';
 import { mfs } from './memfs';
 
+const bareSpecifierPattern = /^[^./]/;
+
 const safeResolve = (request: string) => {
 	try {
 		return require.resolve(request);
@@ -10,7 +12,10 @@ const safeResolve = (request: string) => {
 	}
 };
 
-const bareSpecifierPattern = /^[^./]/;
+const isNodeModule = (request: string) => (
+	bareSpecifierPattern.test(request)
+	&& safeResolve(request)
+);
 
 export function createWebpackCompiler(
 	webpackConfig: webpack.Configuration,
@@ -44,14 +49,6 @@ export function createWebpackCompiler(
 		}
 	}
 
-	// Externalize bare-specifiers that are resolvable by Node.js (aka node_modules)
-	config.externals.push(({ request }, callback) => {
-		if (bareSpecifierPattern.test(request) && safeResolve(request)) {
-			return callback(null, request);
-		}
-		callback();
-	});
-
 	if (webpack.version?.split('.')[0] > '4') {
 		// Externalize Node built-in modules
 		if (!config.externalsPresets) {
@@ -59,12 +56,29 @@ export function createWebpackCompiler(
 		}
 		config.externalsPresets.node = true;
 
+		// Externalize bare-specifiers that are resolvable by Node.js (aka node_modules)
+		config.externals.push(({ request }, callback) => {
+			callback(
+				null,
+				isNodeModule(request) ? request : undefined,
+			);
+		});
+
 		// Same as target: 'node' for async loading chunks
 		Object.assign(config.output, {
 			chunkLoading: 'require',
 			chunkFormat: 'commonjs',
 		});
 	} else {
+		// Externalize bare-specifiers that are resolvable by Node.js (aka node_modules)
+		// @ts-expect-error WP 4 has different signature
+		config.externals.push((_, request, callback) => {
+			callback(
+				null,
+				isNodeModule(request) ? request : undefined,
+			);
+		});
+
 		/**
 		 * Applied when target = 'node'
 		 * https://github.com/webpack/webpack/blob/v4.0.0/lib/WebpackOptionsApply.js#L107
