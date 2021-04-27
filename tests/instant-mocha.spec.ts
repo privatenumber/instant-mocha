@@ -68,4 +68,19 @@ describe.each([
 		expect(stdout).toMatch('1 passing');
 		expect(exitCode).toBe(0);
 	});
+
+	test('custom assertion library - chai', async () => {
+		const { exitCode, stdout } = await execa('node', [
+			...webpackVersion,
+			instantMocha,
+			'--webpackConfig',
+			'webpack.config.js',
+			'tests/using-chai.js',
+		], {
+			cwd: path.resolve('tests/fixture'),
+		}).catch(error => error);
+
+		expect(stdout).toMatch('1 passing');
+		expect(exitCode).toBe(0);
+	});
 });
