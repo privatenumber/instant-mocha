@@ -65,7 +65,9 @@ Add [webpackbar](https://github.com/unjs/webpackbar) to your Webpack config.
 
 ### How is it different from [mocha-webpack](https://github.com/zinserjan/mocha-webpack) or its fork [mochapack](https://github.com/sysgears/mochapack)?
 
-[mocha-webpack](https://github.com/zinserjan/mocha-webpack) is no longer maintained, and its fork [mochapack](https://github.com/sysgears/mochapack) doesn't have Webpack 5 support.
+_First of all, major thanks to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) for the original implementation and serving the community._
+
+This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support (and neither does its fork, [mochapack](https://github.com/sysgears/mochapack)).
 
 Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
