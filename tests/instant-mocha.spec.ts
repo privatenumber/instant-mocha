@@ -4,7 +4,7 @@ import execa from 'execa';
 const instantMocha = path.resolve('./bin/instant-mocha.js');
 
 describe.each([
-	['Webpack 5', []],
+	// ['Webpack 5', []],
 	['Webpack 4', ['-r', '../use-webpack4.js']],
 ])('%s', (_name, webpackVersion) => {
 	test('running tests', async () => {
@@ -18,7 +18,7 @@ describe.each([
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);
 
-		expect(stdout).toMatch('1 passing');
+		expect(stdout).toMatch('2 passing');
 		expect(exitCode).toBe(0);
 	});
 
@@ -61,6 +61,21 @@ describe.each([
 			'--webpackConfig',
 			'webpack.config.js',
 			'tests/dynamic-import-test.js',
+		], {
+			cwd: path.resolve('tests/fixture'),
+		}).catch(error => error);
+
+		expect(stdout).toMatch('1 passing');
+		expect(exitCode).toBe(0);
+	});
+
+	test('custom assertion library - chai', async () => {
+		const { exitCode, stdout } = await execa('node', [
+			...webpackVersion,
+			instantMocha,
+			'--webpackConfig',
+			'webpack.config.js',
+			'tests/using-chai.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
 		}).catch(error => error);

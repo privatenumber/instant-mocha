@@ -1,4 +1,3 @@
-import Module from 'module';
 import webpack from 'webpack';
 import AggregateError from 'aggregate-error';
 import { mfs } from './memfs';
@@ -7,30 +6,33 @@ export function createWebpackCompiler(
 	webpackConfig: webpack.Configuration,
 	testFiles: string[],
 ) {
-	const config = {
-		...webpackConfig,
+	const config = { ...webpackConfig };
 
-		entry: testFiles,
+	config.entry = testFiles;
 
-		// Yields unexpected behavior in certain loaders
-		// eg. vue-loader will build in SSR mode
-		// target: 'node',
+	config.output = {
+		...webpackConfig.output,
 
-		output: {
-			...webpackConfig.output,
+		path: '/',
 
-			path: '/',
+		// https://stackoverflow.com/a/64715069
+		publicPath: '',
 
-			// https://stackoverflow.com/a/64715069
-			publicPath: '',
+		// For Node.js env
+		// https://webpack.js.org/configuration/output/#outputglobalobject
+		globalObject: 'this',
 
-			// For Node.js env
-			// https://webpack.js.org/configuration/output/#outputglobalobject
-			globalObject: 'this',
-
-			libraryTarget: 'commonjs2',
-		},
+		libraryTarget: 'commonjs2',
 	};
+
+	if (!Array.isArray(config.externals)) {
+		const { externals } = config;
+		config.externals = [];
+
+		if (externals) {
+			config.externals.push(externals);
+		}
+	}
 
 	if (webpack.version?.split('.')[0] > '4') {
 		// Externalize Node built-in modules
@@ -65,7 +67,7 @@ export function createWebpackCompiler(
 
 		const target = config.target ?? 'web';
 		// @ts-expect-error WP4 accepts functions
-		config.target = function (compiler) {
+		config.target = (compiler) => {
 			// CJS Chunks
 			new NodeTemplatePlugin().apply(compiler);
 			new ReadFileCompileWasmTemplatePlugin(config.output).apply(compiler);

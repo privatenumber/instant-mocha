@@ -63,14 +63,22 @@ Set [`devtool: 'source-map'`](https://webpack.js.org/configuration/devtool/) in 
 ### How do I add a progress bar?
 Add [webpackbar](https://github.com/unjs/webpackbar) to your Webpack config.
 
+### Are `node_modules` automatically externalized?
+They can't be automatically externalized because it's possible some dependencies are in [ESM format](https://nodejs.org/api/esm.html) and requires a bundler to load them.
+
+It's recommended to externalize what you can in your [Webpack config](https://webpack.js.org/configuration/externals/) to speed up the build though. Consider using [`webpack-node-externals`](https://github.com/liady/webpack-node-externals) to do this.
+
 ### How is it different from [mocha-webpack](https://github.com/zinserjan/mocha-webpack) or its fork [mochapack](https://github.com/sysgears/mochapack)?
 
-[mocha-webpack](https://github.com/zinserjan/mocha-webpack) is no longer maintained, and its fork [mochapack](https://github.com/sysgears/mochapack) doesn't have Webpack 5 support.
+_First of all, major thanks to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) for the original implementation and serving the community._
+
+This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support (and neither does its fork, [mochapack](https://github.com/sysgears/mochapack)).
 
 Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
 - **Doesn't re-implement another file-watching mechanism** Relies on Webpack's watcher instead.
 - **Loosely coupled with Mocha and Webpack** The API surface interacted with is very narrow so it works with most versions, (eg. Webpack 4 & 5).
+- **Correct exit codes** Mocha and `mocha-webpack` returns the number of failed tests as the exit code. instant-mocha only uses exit code `1` for any test failures as per [Bash convention](https://tldp.org/LDP/abs/html/exitcodes.html).
 - **Smaller size** Reuses a lot from Webpack & Mocha so it's much lighter: [![instant-mocha install size](https://packagephobia.now.sh/badge?p=instant-mocha)](https://packagephobia.now.sh/result?p=instant-mocha) vs [![mocha-webpack install size](https://packagephobia.now.sh/badge?p=mocha-webpack)](https://packagephobia.now.sh/result?p=mocha-webpack)
 
 ## 💼 License
