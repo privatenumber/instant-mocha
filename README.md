@@ -64,7 +64,7 @@ Set [`devtool: 'source-map'`](https://webpack.js.org/configuration/devtool/) in 
 Add [webpackbar](https://github.com/unjs/webpackbar) to your Webpack config.
 
 ### Are `node_modules` automatically externalized?
-They can't be automatically externalized because it's possible some dependencies are in [ESM format](https://nodejs.org/api/esm.html) and requires a bundler to load them.
+They can't be automatically externalized because it's possible some dependencies require bundling or pre-processing. For example, packages in [ESM format](https://nodejs.org/api/esm.html) or deep-dependencies that are stubbed for testing.
 
 It's recommended to externalize what you can in your [Webpack config](https://webpack.js.org/configuration/externals/) to speed up the build though. Consider using [`webpack-node-externals`](https://github.com/liady/webpack-node-externals) to do this.
 
