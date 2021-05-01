@@ -18,7 +18,7 @@ Build tests with Webpack and run them with Mocha in one command
 
 _How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) / [mochapack](https://github.com/sysgears/mochapack)?_ Answered in the [FAQ](#how-is-it-different-from-mocha-webpack-or-its-fork-mochapack).
 
-<sub>If you like this project, please star it & [follow me](https://github.com/privatenumber) to see what other cool projects I'm working on! ❤️</sub>
+<sub>Support this project by ⭐️ starring and sharing it. [Follow me](https://github.com/privatenumber) to see what other cool projects I'm working on! ❤️</sub>
 
 ## 🚀 Install
 ```sh
