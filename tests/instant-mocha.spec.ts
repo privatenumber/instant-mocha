@@ -4,7 +4,7 @@ import execa from 'execa';
 const instantMocha = path.resolve('./bin/instant-mocha.js');
 
 describe.each([
-	// ['Webpack 5', []],
+	['Webpack 5', []],
 	['Webpack 4', ['-r', '../use-webpack4.js']],
 ])('%s', (_name, webpackVersion) => {
 	test('running tests', async () => {
