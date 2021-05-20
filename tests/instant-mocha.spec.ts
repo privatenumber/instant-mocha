@@ -126,7 +126,7 @@ describe.each([
 		await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 
 		const stdoutFailing = await collectStdout(stdoutBuffers);
-		expect(stdoutFailing).toMatch('1 failing');
+		expect(stdoutFailing).toMatch('1 passing');
 
 		await fs.promises.writeFile(passingTestPath, passingTestSource);
 
@@ -134,5 +134,5 @@ describe.each([
 		expect(stdoutPassing2).toMatch('2 passing');
 
 		instantMochaWatch.cancel();
-	});
+	}, 20000);
 });
