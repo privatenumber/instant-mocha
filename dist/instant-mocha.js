@@ -57,16 +57,17 @@ async function instantMocha(options) {
                 }
             }
             /**
-             * Seems Webpack's watch callback can't be async.
-             *
              * Had issues with Webpackbar and a multi-page test report.
              * It wasn't possible to clear the previous report output
              * because it seemed like Webpackbar was storing it and
              * re-printing.
              *
-             * This method is async but it's fine.
+             * Running mocha detached from this stack seems to escape
+             * the stdout caching.
              */
-            mocha_1.runMocha(options);
+            setImmediate(() => {
+                mocha_1.runMocha(options);
+            });
         });
     }
     else {
