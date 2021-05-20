@@ -28,10 +28,21 @@ async function instantMocha(options) {
         file: [],
         ...options,
     });
+    if (options.watch) {
+        if (!webpackConfig.plugins) {
+            webpackConfig.plugins = [];
+        }
+        webpackConfig.plugins.unshift({
+            apply(compiler) {
+                compiler.hooks.watchRun.tap('InstantMocha', () => {
+                    process.stdout.write(ansi_escapes_1.default.clearTerminal);
+                });
+            },
+        });
+    }
     const webpackCompiler = webpack_1.createWebpackCompiler(webpackConfig, testFiles);
     if (options.watch) {
-        webpackCompiler.watch({}, async (error, stats) => {
-            process.stdout.write(ansi_escapes_1.default.clearTerminal);
+        webpackCompiler.watch({}, (error, stats) => {
             if (error) {
                 console.log(error);
                 return;
@@ -45,7 +56,17 @@ async function instantMocha(options) {
                     console.log(warning);
                 }
             }
-            await mocha_1.runMocha(options);
+            /**
+             * Seems Webpack's watch callback can't be async.
+             *
+             * Had issues with Webpackbar and a multi-page test report.
+             * It wasn't possible to clear the previous report output
+             * because it seemed like Webpackbar was storing it and
+             * re-printing.
+             *
+             * This method is async but it's fine.
+             */
+            mocha_1.runMocha(options);
         });
     }
     else {
