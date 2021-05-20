@@ -36,12 +36,25 @@ export default async function instantMocha(
 		file: [],
 		...options,
 	});
+
+	if (options.watch) {
+		if (!webpackConfig.plugins) {
+			webpackConfig.plugins = [];
+		}
+
+		webpackConfig.plugins.unshift({
+			apply(compiler) {
+				compiler.hooks.watchRun.tap('InstantMocha', () => {
+					process.stdout.write(ansiEscapes.clearTerminal);
+				});
+			},
+		});
+	}
+
 	const webpackCompiler = createWebpackCompiler(webpackConfig, testFiles);
 
 	if (options.watch) {
-		webpackCompiler.watch({}, async (error, stats) => {
-			process.stdout.write(ansiEscapes.clearTerminal);
-
+		webpackCompiler.watch({}, (error, stats) => {
 			if (error) {
 				console.log(error);
 				return;
@@ -58,7 +71,18 @@ export default async function instantMocha(
 				}
 			}
 
-			await runMocha(options);
+			/**
+			 * Had issues with Webpackbar and a multi-page test report.
+			 * It wasn't possible to clear the previous report output
+			 * because it seemed like Webpackbar was storing it and
+			 * re-printing.
+			 *
+			 * Running mocha detached from this stack seems to escape
+			 * the stdout caching.
+			 */
+			setImmediate(() => {
+				runMocha(options);
+			});
 		});
 	} else {
 		await webpackCompiler.$run();
