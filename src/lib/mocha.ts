@@ -20,12 +20,13 @@ function createMochaInstance(
 
 	(mocha as CustomMocha).$run = $run;
 
-	// @ts-expect-error overwriting private prototpe method
-	mocha.loadFiles = function loadFiles(callback) {
+	mocha.loadFilesAsync = async function loadFilesAsync() {
 		const {
 			suite,
 			files,
 		} = this as Mocha;
+		// Call with true tell mocha that we will be handling the file load outselves
+		this.lazyLoadFiles(true);
 
 		for (let file of files) {
 			file = path.resolve(file);
@@ -38,7 +39,7 @@ function createMochaInstance(
 			);
 			suite.emit(
 				Suite.constants.EVENT_FILE_REQUIRE,
-				mRequire(file),
+				await mRequire(file),
 				file,
 				this,
 			);
@@ -48,9 +49,6 @@ function createMochaInstance(
 				file,
 				this,
 			);
-		}
-		if (typeof callback === 'function') {
-			callback();
 		}
 	};
 
@@ -62,5 +60,6 @@ export async function runMocha(
 ): Promise<number> {
 	const mocha = createMochaInstance(options);
 	mocha.files = ['/main.js'];
+	await mocha.loadFilesAsync();
 	return await mocha.$run();
 }
