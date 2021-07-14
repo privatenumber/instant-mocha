@@ -5,9 +5,56 @@ import webpack from 'webpack';
 import collectFiles from 'mocha/lib/cli/collect-files.js';
 import AggregateError from 'aggregate-error';
 import ansiEscapes from 'ansi-escapes';
-import { InstantMochaOptions } from './types';
+import { InstantMochaOptions, WebpackEnvironmentOptions, WebpackArgvOptions } from './types';
 import { runMocha } from './lib/mocha';
 import { createWebpackCompiler } from './lib/webpack';
+
+function getWebpackConfig(
+	webpackConfigPath: string,
+	options: InstantMochaOptions,
+): webpack.Configuration {
+	assert(
+		fs.existsSync(webpackConfigPath),
+		`Invalid Webpack configuration path: ${webpackConfigPath}`,
+	);
+
+	let config;
+	try {
+		// eslint-disable-next-line node/global-require
+		config = require(webpackConfigPath);
+	} catch {
+		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
+	}
+
+	if (typeof config === 'function') {
+		const environment = {} as WebpackEnvironmentOptions;
+		if (options.watch) {
+			environment.WEBPACK_WATCH = true;
+		} else {
+			environment.WEBPACK_BUILD = true;
+		}
+
+		const argv = {
+			env: environment,
+		} as WebpackArgvOptions;
+
+		if (options.mode) {
+			argv.mode = options.mode;
+		}
+
+		if (options.watch) {
+			argv.watch = options.watch;
+		}
+
+		return config(environment, argv);
+	}
+
+	if (options.mode) {
+		config.mode = options.mode;
+	}
+
+	return config;
+}
 
 export default async function instantMocha(
 	options: InstantMochaOptions,
@@ -18,18 +65,7 @@ export default async function instantMocha(
 	);
 
 	const webpackConfigPath = path.resolve(options.webpackConfig);
-	assert(
-		fs.existsSync(webpackConfigPath),
-		`Invalid Webpack configuration path: ${webpackConfigPath}`,
-	);
-
-	let webpackConfig: webpack.Configuration;
-	try {
-		// eslint-disable-next-line node/global-require
-		webpackConfig = require(webpackConfigPath);
-	} catch {
-		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
-	}
+	const webpackConfig = getWebpackConfig(webpackConfigPath, options);
 
 	const testFiles = collectFiles({
 		ignore: [],

@@ -17,6 +17,8 @@ export function createWebpackCompiler(
 
 		// https://stackoverflow.com/a/64715069
 		publicPath: '',
+		// to override any possible custom paths in the webpack config
+		filename: 'main.js',
 
 		// For Node.js env
 		// https://webpack.js.org/configuration/output/#outputglobalobject

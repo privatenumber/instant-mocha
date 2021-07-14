@@ -99,6 +99,21 @@ describe.each([
 		expect(exitCode).toBe(0);
 	});
 
+	test('function config', async () => {
+		const { exitCode, stdout } = await execa('node', [
+			...webpackVersion,
+			instantMocha,
+			'--webpackConfig',
+			'webpack.config.function.js',
+			'tests/passing-test.js',
+		], {
+			cwd: path.resolve('tests/fixture'),
+		}).catch(error => error);
+
+		expect(stdout).toMatch('2 passing');
+		expect(exitCode).toBe(0);
+	});
+
 	test('watch tests', async () => {
 		const stdoutBuffers = [];
 
@@ -135,4 +150,18 @@ describe.each([
 
 		instantMochaWatch.cancel();
 	}, 20000);
+});
+
+test('top level await', async () => {
+	const { exitCode, stdout } = await execa('node', [
+		instantMocha,
+		'--webpackConfig',
+		'webpack.config.top-level-await.js',
+		'tests/top-level-await.js',
+	], {
+		cwd: path.resolve('tests/fixture'),
+	}).catch(error => error);
+
+	expect(stdout).toMatch('2 passing');
+	expect(exitCode).toBe(0);
 });
