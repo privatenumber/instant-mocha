@@ -10,5 +10,6 @@ export type WebpackEnvironmentOptions = {
 };
 export type WebpackArgvOptions = {
 	mode: string;
+	watch: boolean;
 	env: WebpackEnvironmentOptions;
 }

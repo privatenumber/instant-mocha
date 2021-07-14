@@ -34,10 +34,17 @@ function getWebpackConfig(
 			environment.WEBPACK_BUILD = true;
 		}
 
-		const argv: WebpackArgvOptions = {
-			mode: options.mode,
+		const argv = {
 			env: environment,
-		};
+		} as WebpackArgvOptions;
+
+		if (options.mode) {
+			argv.mode = options.mode;
+		}
+
+		if (options.watch) {
+			argv.watch = options.watch;
+		}
 
 		return config(environment, argv);
 	}
