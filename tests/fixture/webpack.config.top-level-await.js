@@ -8,6 +8,9 @@ const baseConfig = {
 			'~': path.resolve(__dirname, 'src/'),
 		},
 	},
+	experiments: {
+		topLevelAwait: true,
+	},
 };
 
 module.exports = baseConfig;
