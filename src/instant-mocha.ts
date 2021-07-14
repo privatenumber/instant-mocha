@@ -9,6 +9,46 @@ import { InstantMochaOptions, WebpackEnvironmentOptions, WebpackArgvOptions } fr
 import { runMocha } from './lib/mocha';
 import { createWebpackCompiler } from './lib/webpack';
 
+function getWebpackConfig(
+	webpackConfigPath: string,
+	options: InstantMochaOptions,
+): webpack.Configuration {
+	assert(
+		fs.existsSync(webpackConfigPath),
+		`Invalid Webpack configuration path: ${webpackConfigPath}`,
+	);
+
+	let config;
+	try {
+		// eslint-disable-next-line node/global-require
+		config = require(webpackConfigPath);
+	} catch {
+		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
+	}
+
+	if (typeof config === 'function') {
+		const environment = {} as WebpackEnvironmentOptions;
+		if (options.watch) {
+			environment.WEBPACK_WATCH = true;
+		} else {
+			environment.WEBPACK_BUILD = true;
+		}
+
+		const argv: WebpackArgvOptions = {
+			mode: options.mode,
+			env: environment,
+		};
+
+		return config(environment, argv);
+	}
+
+	if (options.mode) {
+		config.mode = options.mode;
+	}
+
+	return config;
+}
+
 export default async function instantMocha(
 	options: InstantMochaOptions,
 ): Promise<number> {
@@ -18,38 +58,7 @@ export default async function instantMocha(
 	);
 
 	const webpackConfigPath = path.resolve(options.webpackConfig);
-	assert(
-		fs.existsSync(webpackConfigPath),
-		`Invalid Webpack configuration path: ${webpackConfigPath}`,
-	);
-
-	let webpackConfig: webpack.Configuration;
-	try {
-		// eslint-disable-next-line node/global-require, @typescript-eslint/no-var-requires
-		const config = require(webpackConfigPath);
-		if (typeof config === 'function') {
-			const environment = {} as WebpackEnvironmentOptions;
-			if (options.watch) {
-				environment.WEBPACK_WATCH = true;
-			} else {
-				environment.WEBPACK_BUILD = true;
-			}
-
-			const argv = {
-				mode: options.mode,
-				env: environment,
-			} as WebpackArgvOptions;
-
-			webpackConfig = config(environment, argv);
-		} else {
-			if (options.mode) {
-				config.mode = options.mode;
-			}
-			webpackConfig = config;
-		}
-	} catch {
-		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
-	}
+	const webpackConfig = getWebpackConfig(webpackConfigPath, options);
 
 	const testFiles = collectFiles({
 		ignore: [],
