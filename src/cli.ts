@@ -60,7 +60,13 @@ yargs()
 			description: 'Watch mode',
 			group: INSTANT_MOCHA_OPTIONS_GROUP,
 		},
+		mode: {
+			description: 'Mode passed to webpack development|production',
+			group: INSTANT_MOCHA_OPTIONS_GROUP,
+			type: 'string',
+		},
 	})
+	.alias('m', 'mode')
 	.help('help', 'Show usage information & exit')
 	.alias('help', 'h')
 	.version('version', 'Show version number & exit', version)
