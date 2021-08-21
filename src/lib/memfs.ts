@@ -17,4 +17,8 @@ sourceMapSupport.install({
 	},
 });
 
-export const mRequire = (modulePath: string): any => createFsRequire(mfs)(modulePath);
+export const mRequire = (modulePath: string): any => (
+	createFsRequire(mfs, {
+		fs: true,
+	})(modulePath)
+);
