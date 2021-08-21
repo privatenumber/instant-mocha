@@ -77,7 +77,7 @@ This project was created from scratch because `mocha-webpack` is no longer maint
 Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
 - **Doesn't re-implement another file-watching mechanism** Relies on Webpack's watcher instead.
-- **Loosely coupled with Mocha and Webpack** The API surface interacted with is very narrow so it works with most versions, (eg. Webpack 4 & 5).
+- **Loosely coupled with Mocha and Webpack** The API surface used is very narrow so it works with most versions, (eg. Webpack 4 & 5).
 - **Correct exit codes** Mocha and `mocha-webpack` returns the number of failed tests as the exit code. instant-mocha only uses exit code `1` for any test failures as per [Bash convention](https://tldp.org/LDP/abs/html/exitcodes.html).
 - **Smaller size** Reuses a lot from Webpack & Mocha so it's much lighter: [![instant-mocha install size](https://packagephobia.now.sh/badge?p=instant-mocha)](https://packagephobia.now.sh/result?p=instant-mocha) vs [![mocha-webpack install size](https://packagephobia.now.sh/badge?p=mocha-webpack)](https://packagephobia.now.sh/result?p=mocha-webpack)
 
