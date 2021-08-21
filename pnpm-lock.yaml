@@ -11,7 +11,7 @@ specifiers:
   eslint: ^7.32.0
   esno: ^0.9.1
   execa: ^5.1.1
-  fs-require: ^1.0.0
+  fs-require: ^1.1.0
   husky: ^4.3.8
   jest: ^27.0.6
   lint-staged: ^11.1.2
@@ -28,7 +28,7 @@ specifiers:
 dependencies:
   aggregate-error: 3.1.0
   ansi-escapes: 4.3.2
-  fs-require: 1.0.0
+  fs-require: 1.1.0
   memfs: 3.2.2
   minimist: 1.2.5
   source-map-support: 0.5.19
@@ -2980,8 +2980,8 @@ packages:
     resolution: {integrity: sha512-cybjIfiiE+pTWicSCLFHSrXZ6EilF30oh91FDP9S2B051prEa7QWfrVTQm10/dDpswBDXZugPa1Ogu8Yh+HV0Q==}
     dev: false
 
-  /fs-require/1.0.0:
-    resolution: {integrity: sha512-3guiAJ1t2nM1sUc0rGxAr32b9hyoZz0zGn+8KV/poUEUOCMe8g3rHgjgfbgRaz19SN6s/WMDI8F5fdNnm7kseA==}
+  /fs-require/1.1.0:
+    resolution: {integrity: sha512-UNPeG0SDBVyVgec9J2sdFCM5HYwQEZ0umZr1XjHvxzpNX6rX+4jvXQIrnGXFGe/X8hVQ4+T1muPiVyvSGdo3Lw==}
     dev: false
 
   /fs-write-stream-atomic/1.0.10:

@@ -44,7 +44,7 @@
 	"dependencies": {
 		"aggregate-error": "^3.1.0",
 		"ansi-escapes": "^4.3.2",
-		"fs-require": "^1.0.0",
+		"fs-require": "^1.1.0",
 		"memfs": "^3.2.2",
 		"minimist": "^1.2.5",
 		"source-map-support": "^0.5.19",
