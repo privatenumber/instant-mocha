@@ -9,10 +9,10 @@ import { InstantMochaOptions, WebpackEnvironmentOptions, WebpackArgvOptions } fr
 import { runMocha } from './lib/mocha';
 import { createWebpackCompiler } from './lib/webpack';
 
-function getWebpackConfig(
+async function getWebpackConfig(
 	webpackConfigPath: string,
 	options: InstantMochaOptions,
-): webpack.Configuration {
+): Promise<webpack.Configuration> {
 	assert(
 		fs.existsSync(webpackConfigPath),
 		`Invalid Webpack configuration path: ${webpackConfigPath}`,
@@ -22,8 +22,19 @@ function getWebpackConfig(
 	try {
 		// eslint-disable-next-line node/global-require
 		config = require(webpackConfigPath);
-	} catch {
-		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
+	} catch (error) {
+		if (error.code === 'ERR_REQUIRE_ESM') {
+			// Using webpacks new function approach to avoid typescript
+			// from transpiling dynamic import to require which breaks
+			// the purpose of this since require can only load cjs files
+			// and not esm modules
+			// See issue https://github.com/microsoft/TypeScript/issues/43329
+			// eslint-disable-next-line no-new-func
+			const dynamicImport = new Function('id', 'return import(id);');
+			config = (await dynamicImport(webpackConfigPath)).default;
+		} else {
+			throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
+		}
 	}
 
 	if (typeof config === 'function') {
@@ -65,7 +76,7 @@ export default async function instantMocha(
 	);
 
 	const webpackConfigPath = path.resolve(options.webpackConfig);
-	const webpackConfig = getWebpackConfig(webpackConfigPath, options);
+	const webpackConfig = await getWebpackConfig(webpackConfigPath, options);
 
 	const testFiles = collectFiles({
 		ignore: [],
