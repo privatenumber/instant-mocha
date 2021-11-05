@@ -45,7 +45,7 @@ yargs()
 					process.exit(1);
 				}
 			} catch (error) {
-				console.log(error.message);
+				console.error(error);
 				process.exit(1);
 			}
 		},
