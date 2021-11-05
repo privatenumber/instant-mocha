@@ -114,6 +114,21 @@ describe.each([
 		expect(exitCode).toBe(0);
 	});
 
+	test('esm config', async () => {
+		const { exitCode, stdout } = await execa('node', [
+			...webpackVersion,
+			instantMocha,
+			'--webpackConfig',
+			'webpack.config.esm.mjs',
+			'tests/passing-test.js',
+		], {
+			cwd: path.resolve('tests/fixture'),
+		}).catch(error => error);
+
+		expect(stdout).toMatch('3 passing');
+		expect(exitCode).toBe(0);
+	});
+
 	test('watch tests', async () => {
 		const stdoutBuffers = [];
 
