@@ -7,7 +7,7 @@ const collectStdout = (buffers: Buffer[]) => new Promise<string>(
 		buffers.push = function (...arguments_) {
 			const returnValue = Array.prototype.push.apply(buffers, arguments_);
 			const stdout = Buffer.concat(buffers).toString().trim();
-			if (/(passing|failing)/.test(stdout)) {
+			if (/passing|failing/.test(stdout)) {
 				buffers.splice(0);
 				resolve(stdout);
 			}
@@ -164,7 +164,7 @@ describe.each([
 		expect(stdoutPassing2).toMatch('3 passing');
 
 		instantMochaWatch.cancel();
-	}, 20000);
+	}, 20_000);
 });
 
 test('top level await', async () => {

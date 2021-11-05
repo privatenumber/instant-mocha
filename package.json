@@ -51,7 +51,7 @@
 		"yargs": "^16.2.0"
 	},
 	"devDependencies": {
-		"@pvtnbr/eslint-config-typescript": "^0.1.22",
+		"@pvtnbr/eslint-config": "^0.4.1",
 		"@types/mocha": "^9.0.0",
 		"@types/yargs": "^17.0.2",
 		"chai": "^4.3.4",
@@ -69,17 +69,9 @@
 		"webpack4": "npm:webpack@4.0.0"
 	},
 	"eslintConfig": {
-		"extends": "@pvtnbr/eslint-config-typescript",
+		"extends": "@pvtnbr",
 		"ignorePatterns": [
 			"tests/fixture"
-		],
-		"overrides": [
-			{
-				"files": "cli.ts",
-				"rules": {
-					"unicorn/no-process-exit": "off"
-				}
-			}
 		]
 	}
 }
