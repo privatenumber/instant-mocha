@@ -1,55 +1,12 @@
 import path from 'path';
-import fs from 'fs';
 import assert from 'assert';
-import webpack from 'webpack';
 import collectFiles from 'mocha/lib/cli/collect-files.js';
 import AggregateError from 'aggregate-error';
 import ansiEscapes from 'ansi-escapes';
-import { InstantMochaOptions, WebpackEnvironmentOptions, WebpackArgvOptions } from './types';
+import { InstantMochaOptions } from './types';
 import { runMocha } from './lib/mocha';
 import { createWebpackCompiler } from './lib/webpack';
-import { loadWebpackConfig } from './lib/load-webpack-config';
-
-async function getWebpackConfig(
-	webpackConfigPath: string,
-	options: InstantMochaOptions,
-): Promise<webpack.Configuration> {
-	assert(
-		fs.existsSync(webpackConfigPath),
-		`Invalid Webpack configuration path: ${webpackConfigPath}`,
-	);
-
-	const config = await loadWebpackConfig(webpackConfigPath);
-
-	if (typeof config === 'function') {
-		const environment = {} as WebpackEnvironmentOptions;
-		if (options.watch) {
-			environment.WEBPACK_WATCH = true;
-		} else {
-			environment.WEBPACK_BUILD = true;
-		}
-
-		const argv = {
-			env: environment,
-		} as WebpackArgvOptions;
-
-		if (options.mode) {
-			argv.mode = options.mode;
-		}
-
-		if (options.watch) {
-			argv.watch = options.watch;
-		}
-
-		return config(environment, argv);
-	}
-
-	if (options.mode) {
-		config.mode = options.mode;
-	}
-
-	return config;
-}
+import { getWebpackConfig } from './lib/get-webpack-config';
 
 export default async function instantMocha(
 	options: InstantMochaOptions,
