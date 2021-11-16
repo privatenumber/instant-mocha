@@ -28,11 +28,8 @@ function createMochaInstance(
 		// Call with true tell mocha that we will be handling the file load outselves
 		this.lazyLoadFiles(true);
 
-		const isWin = path.delimiter === ';';
-
 		for (let file of files) {
-			if (isWin) path.posix.resolve(file);
-			else file = path.resolve(file);
+			file = path.posix.resolve(file);
 
 			suite.emit(
 				Suite.constants.EVENT_FILE_PRE_REQUIRE,
