@@ -51,7 +51,7 @@
 		"yargs": "^16.2.0"
 	},
 	"devDependencies": {
-		"@pvtnbr/eslint-config": "^0.4.1",
+		"@pvtnbr/eslint-config": "^0.7.0",
 		"@types/mocha": "^9.0.0",
 		"@types/yargs": "^17.0.5",
 		"chai": "^4.3.4",
