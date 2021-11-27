@@ -27,7 +27,9 @@ jobs:
         run: npx ci
       - name: Build
         run: npm run build
-      - name: Lint
-        run: npm run lint
+      - name: Test
+        run: |
+          cd tests/fixture
+          node ../../bin/instant-mocha.js --webpackConfig webpack.config.esm.mjs tests/passing-test.js
       - name: Test
         run: npm run test --if-present
