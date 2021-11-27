@@ -151,7 +151,7 @@ describe.each([
 		expect(stdoutPassing).toMatch('3 passing');
 
 		const passingTestPath = './tests/fixture/tests/passing-test.js';
-		const passingTestSource = (await fs.promises.readFile(passingTestPath)).toString();
+		const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf-8');
 
 		await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 

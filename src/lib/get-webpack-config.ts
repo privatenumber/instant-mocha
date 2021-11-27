@@ -22,7 +22,8 @@ async function loadWebpackConfig(webpackConfigPath: string) {
 	} catch (error) {
 		// This error code is only available on versions of Node.js supporting ESM
 		if (error.code === 'ERR_REQUIRE_ESM') {
-			return (await importESM(webpackConfigPath)).default;
+			const { default: webpackConfig } = await importESM(webpackConfigPath);
+			return webpackConfig;
 		}
 
 		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
