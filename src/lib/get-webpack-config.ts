@@ -22,6 +22,9 @@ async function loadWebpackConfig(webpackConfigPath: string) {
 	} catch (error) {
 		// This error code is only available on versions of Node.js supporting ESM
 		if (error.code === 'ERR_REQUIRE_ESM') {
+			if (process.platform === 'win32') {
+				webpackConfigPath = `file:///${webpackConfigPath}`;
+			}
 			const { default: webpackConfig } = await importESM(webpackConfigPath);
 			return webpackConfig;
 		}
