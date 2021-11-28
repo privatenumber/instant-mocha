@@ -119,7 +119,7 @@ describe.each([
 			...webpackVersion,
 			instantMocha,
 			'--webpackConfig',
-			'webpack.config.esm.mjs',
+			path.resolve('tests/fixture/webpack.config.esm.mjs'),
 			'tests/passing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
