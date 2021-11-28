@@ -24,7 +24,7 @@
 		"lint": "eslint .",
 		"dev": "esno src/cli.ts",
 		"build": "tsc",
-		"test": "jest && :"
+		"test": "jest"
 	},
 	"husky": {
 		"hooks": {
