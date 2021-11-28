@@ -29,7 +29,7 @@ function createMochaInstance(
 		this.lazyLoadFiles(true);
 
 		for (let file of files) {
-			file = path.resolve(file);
+			file = path.posix.resolve(file);
 
 			suite.emit(
 				Suite.constants.EVENT_FILE_PRE_REQUIRE,
