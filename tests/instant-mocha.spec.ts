@@ -7,7 +7,7 @@ const collectStdout = (buffers: Buffer[]) => new Promise<string>(
 		buffers.push = function (...arguments_) {
 			const returnValue = Array.prototype.push.apply(buffers, arguments_);
 			const stdout = Buffer.concat(buffers).toString().trim();
-			if (/(passing|failing)/.test(stdout)) {
+			if (/passing|failing/.test(stdout)) {
 				buffers.splice(0);
 				resolve(stdout);
 			}
@@ -151,7 +151,7 @@ describe.each([
 		expect(stdoutPassing).toMatch('3 passing');
 
 		const passingTestPath = './tests/fixture/tests/passing-test.js';
-		const passingTestSource = (await fs.promises.readFile(passingTestPath)).toString();
+		const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf-8');
 
 		await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 
@@ -164,7 +164,7 @@ describe.each([
 		expect(stdoutPassing2).toMatch('3 passing');
 
 		instantMochaWatch.cancel();
-	}, 20000);
+	}, 20_000);
 });
 
 test('top level await', async () => {
