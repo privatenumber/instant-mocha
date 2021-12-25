@@ -72,7 +72,7 @@ It's recommended to externalize what you can in your [Webpack config](https://we
 
 _First of all, major thanks to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) for the original implementation and serving the community._
 
-This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support (and neither does its fork, [mochapack](https://github.com/sysgears/mochapack)).
+This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support.
 
 Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
