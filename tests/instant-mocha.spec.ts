@@ -26,8 +26,6 @@ describe.each([
 		const { exitCode, stdout } = await execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'tests/passing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
@@ -41,8 +39,6 @@ describe.each([
 		const { exitCode, stdout } = await execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'tests/failing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
@@ -56,8 +52,6 @@ describe.each([
 		const { exitCode, stdout } = await execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'--reporter',
 			'custom-reporter.js',
 			'tests/failing-test.js',
@@ -73,8 +67,6 @@ describe.each([
 		const { exitCode, stdout } = await execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'tests/dynamic-import-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
@@ -88,8 +80,6 @@ describe.each([
 		const { exitCode, stdout } = await execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'tests/using-chai.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
@@ -135,8 +125,6 @@ describe.each([
 		const instantMochaWatch = execa('node', [
 			...webpackVersion,
 			instantMocha,
-			'--webpackConfig',
-			'webpack.config.js',
 			'tests/passing-test.js',
 			'--watch',
 		], {
