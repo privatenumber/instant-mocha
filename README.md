@@ -29,7 +29,7 @@ Note: `webpack` and `mocha` are peer-dependencies so you can provide any version
 
 ## 👨‍🏫 Usage
 ```sh
-instant-mocha --webpack-config <Webpack config path> [test paths/globs...]
+instant-mocha [test paths/globs...]
 ```
 
 You can either use [`npx`](https://www.npmjs.com/package/npx) (eg. `npx instant-mocha ...`) or add it to [`package.json` scripts](https://nodejs.dev/learn/the-package-json-guide) (eg. `npm test`) to invoke it. 

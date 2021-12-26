@@ -1,5 +1,4 @@
 import path from 'path';
-import assert from 'assert';
 import collectFiles from 'mocha/lib/cli/collect-files.js';
 import AggregateError from 'aggregate-error';
 import ansiEscapes from 'ansi-escapes';
@@ -11,12 +10,7 @@ import { getWebpackConfig } from './lib/get-webpack-config';
 export default async function instantMocha(
 	options: InstantMochaOptions,
 ): Promise<number> {
-	assert(
-		options.webpackConfig,
-		'Webpack configuration path must be passed in',
-	);
-
-	const webpackConfigPath = path.resolve(options.webpackConfig);
+	const webpackConfigPath = path.resolve(options.webpackConfig || 'webpack.config.js');
 	const webpackConfig = await getWebpackConfig(webpackConfigPath, options);
 
 	const testFiles = collectFiles({
