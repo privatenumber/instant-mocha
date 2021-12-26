@@ -17,14 +17,18 @@ const collectStdout = (buffers: Buffer[]) => new Promise<string>(
 	},
 );
 const instantMocha = path.resolve('./bin/instant-mocha.js');
+const mocha8RequireArguments = ['-r', '../use-mocha8.js'];
+const webpack4RequireArguments = ['-r', '../use-webpack4.js'];
 
 describe.each([
-	['Webpack 5', []],
-	['Webpack 4', ['-r', '../use-webpack4.js']],
-])('%s', (_name, webpackVersion) => {
+	['Webpack 5 & Mocha 9', []],
+	['Webpack 5 & Mocha 8', [...mocha8RequireArguments]],
+	['Webpack 4 & Mocha 9', [...webpack4RequireArguments]],
+	['Webpack 4 & Mocha 8', [...webpack4RequireArguments, ...mocha8RequireArguments]],
+])('%s', (_name, extraArguments) => {
 	test('running tests', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
@@ -39,7 +43,7 @@ describe.each([
 
 	test('exit-code on failure', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
@@ -54,7 +58,7 @@ describe.each([
 
 	test('custom reporter', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
@@ -71,7 +75,7 @@ describe.each([
 
 	test('dynamic import', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
@@ -86,7 +90,7 @@ describe.each([
 
 	test('custom assertion library - chai', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
@@ -101,7 +105,7 @@ describe.each([
 
 	test('function config', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.function.js',
@@ -116,7 +120,7 @@ describe.each([
 
 	test('esm config', async () => {
 		const { exitCode, stdout } = await execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.esm.mjs',
@@ -133,7 +137,7 @@ describe.each([
 		const stdoutBuffers = [];
 
 		const instantMochaWatch = execa('node', [
-			...webpackVersion,
+			...extraArguments,
 			instantMocha,
 			'--webpackConfig',
 			'webpack.config.js',
