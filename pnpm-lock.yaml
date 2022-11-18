@@ -16,6 +16,7 @@ specifiers:
   jest: ^29.3.1
   lint-staged: ^13.0.3
   lodash-es: ^4.17.21
+  manten: ^0.5.0
   memfs: ^3.4.0
   mocha: ^8.3.2
   simple-git-hooks: ^2.8.1
@@ -47,6 +48,7 @@ devDependencies:
   jest: 29.3.1_@types+node@18.11.9
   lint-staged: 13.0.3
   lodash-es: 4.17.21
+  manten: 0.5.0
   mocha: 8.3.2
   simple-git-hooks: 2.8.1
   tsx: 3.12.1
@@ -4877,6 +4879,12 @@ packages:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
     dependencies:
       tmpl: 1.0.5
+    dev: true
+
+  /manten/0.5.0:
+    resolution: {integrity: sha512-IDy6DR457piGAZzTGSxyVbNJc992wLKSsjdUFUn7V/taFfjoLkTbSG93p62Y/TDI5i2SVaLEQGNx0mzUu9kMQw==}
+    dependencies:
+      expect: 29.3.1
     dev: true
 
   /map-cache/0.2.2:
