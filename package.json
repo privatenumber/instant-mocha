@@ -51,6 +51,7 @@
 	},
 	"devDependencies": {
 		"@pvtnbr/eslint-config": "^0.7.0",
+		"@types/jest": "^29.2.3",
 		"@types/mocha": "^9.0.0",
 		"@types/yargs": "^17.0.7",
 		"chai": "^4.3.4",
