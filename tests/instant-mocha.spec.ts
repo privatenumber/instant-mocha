@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import execa from 'execa';
+import { bin } from '../package.json';
+
+const instantMocha = path.resolve(bin);
 
 const collectStdout = (buffers: Buffer[]) => new Promise<string>(
 	(resolve) => {
@@ -16,7 +19,6 @@ const collectStdout = (buffers: Buffer[]) => new Promise<string>(
 		};
 	},
 );
-const instantMocha = path.resolve('./bin/instant-mocha.js');
 
 describe.each([
 	['Webpack 5', []],

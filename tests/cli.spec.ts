@@ -1,7 +1,8 @@
 import path from 'path';
 import execa from 'execa';
+import { bin } from '../package.json';
 
-const instantMocha = path.resolve('./bin/instant-mocha.js');
+const instantMocha = path.resolve(bin);
 
 test('shows help', async () => {
 	const { exitCode, stdout } = await execa(instantMocha, ['--help']);
