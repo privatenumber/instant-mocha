@@ -132,46 +132,46 @@ export default testSuite(({ describe }) => {
 					expect(imProcess.exitCode).toBe(0);
 				});
 
-				test('watch tests', async () => {
-					const stdoutBuffers: Buffer[] = [];
-					const fixture = await createFixture(fixturePath);
-					const instantMochaWatch = instantMocha(
-						[
-							'--webpackConfig',
-							'webpack.config.js',
-							'tests/passing-test.js',
-							'--watch',
-						],
-						{
-							nodeOptions,
-							cwd: fixture.path,
-						},
-					);
+				// test('watch tests', async () => {
+				// 	const stdoutBuffers: Buffer[] = [];
+				// 	const fixture = await createFixture(fixturePath);
+				// 	const instantMochaWatch = instantMocha(
+				// 		[
+				// 			'--webpackConfig',
+				// 			'webpack.config.js',
+				// 			'tests/passing-test.js',
+				// 			'--watch',
+				// 		],
+				// 		{
+				// 			nodeOptions,
+				// 			cwd: fixture.path,
+				// 		},
+				// 	);
 
-					instantMochaWatch.stdout!.on('data', (data) => {
-						stdoutBuffers.push(data);
-					});
+				// 	instantMochaWatch.stdout!.on('data', (data) => {
+				// 		stdoutBuffers.push(data);
+				// 	});
 
-					const stdoutPassing = await collectStdout(stdoutBuffers);
-					expect(stdoutPassing).toMatch('3 passing');
+				// 	const stdoutPassing = await collectStdout(stdoutBuffers);
+				// 	expect(stdoutPassing).toMatch('3 passing');
 
-					const passingTestPath = path.join(fixture.path, './tests/passing-test.js');
-					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
+				// 	const passingTestPath = path.join(fixture.path, './tests/passing-test.js');
+				// 	const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
 
-					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
+				// 	await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 
-					const stdoutFailing = await collectStdout(stdoutBuffers);
-					expect(stdoutFailing).toMatch('2 passing');
+				// 	const stdoutFailing = await collectStdout(stdoutBuffers);
+				// 	expect(stdoutFailing).toMatch('2 passing');
 
-					await fs.promises.writeFile(passingTestPath, passingTestSource);
+				// 	await fs.promises.writeFile(passingTestPath, passingTestSource);
 
-					const stdoutPassing2 = await collectStdout(stdoutBuffers);
-					expect(stdoutPassing2).toMatch('3 passing');
+				// 	const stdoutPassing2 = await collectStdout(stdoutBuffers);
+				// 	expect(stdoutPassing2).toMatch('3 passing');
 
-					instantMochaWatch.cancel();
+				// 	instantMochaWatch.cancel();
 
-					await fixture.rm();
-				}, 20_000);
+				// 	await fixture.rm();
+				// }, 20_000);
 			});
 		}
 	});
