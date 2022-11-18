@@ -4,6 +4,7 @@
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"types": ["mocha"],
+		"target": "ES2019"
 	},
 	"include": [
 		"src"
