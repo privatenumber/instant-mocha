@@ -1,6 +1,6 @@
 import assert from 'assert';
 import fs from 'fs';
-import { last } from 'lodash-es';
+import { last } from 'array-last';
 import { add } from '~/add';
 
 it('should add', () => {
