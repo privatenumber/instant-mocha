@@ -28,13 +28,10 @@
 		"test": "jest"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm build && pnpm lint-staged"
+		"pre-commit": "pnpm lint-staged"
 	},
 	"lint-staged": {
-		"*.{js,ts}": [
-			"pnpm lint",
-			"pnpm test"
-		]
+		"*.{js,ts}": "pnpm lint"
 	},
 	"peerDependencies": {
 		"mocha": "^6.1.4 || ^8.3.2",
