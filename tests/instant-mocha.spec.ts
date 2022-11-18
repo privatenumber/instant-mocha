@@ -31,7 +31,8 @@ describe.each([
 			'tests/passing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('3 passing');
 		expect(exitCode).toBe(0);
@@ -46,7 +47,8 @@ describe.each([
 			'tests/failing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('2 failing');
 		expect(exitCode).toBe(1);
@@ -63,7 +65,8 @@ describe.each([
 			'tests/failing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('Custom failure message');
 		expect(exitCode).toBe(1);
@@ -78,7 +81,8 @@ describe.each([
 			'tests/dynamic-import-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('1 passing');
 		expect(exitCode).toBe(0);
@@ -93,7 +97,8 @@ describe.each([
 			'tests/using-chai.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('1 passing');
 		expect(exitCode).toBe(0);
@@ -108,7 +113,8 @@ describe.each([
 			'tests/passing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('3 passing');
 		expect(exitCode).toBe(0);
@@ -123,7 +129,8 @@ describe.each([
 			'tests/passing-test.js',
 		], {
 			cwd: path.resolve('tests/fixture'),
-		}).catch(error => error);
+			reject: false,
+		});
 
 		expect(stdout).toMatch('3 passing');
 		expect(exitCode).toBe(0);
@@ -175,7 +182,8 @@ test('top level await', async () => {
 		'tests/top-level-await.js',
 	], {
 		cwd: path.resolve('tests/fixture'),
-	}).catch(error => error);
+		reject: false,
+	});
 
 	expect(stdout).toMatch('2 passing');
 	expect(exitCode).toBe(0);
