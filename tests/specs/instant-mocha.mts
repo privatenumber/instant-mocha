@@ -158,9 +158,9 @@ export default testSuite(({ describe }) => {
 					const passingTestPath = path.join(fixture.path, './tests/passing-test.js');
 					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
 
+					const collecting = collectStdout(stdoutBuffers);
 					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
-
-					const stdoutFailing = await collectStdout(stdoutBuffers);
+					const stdoutFailing = await collecting;
 					expect(stdoutFailing).toMatch('2 passing');
 
 					await fs.promises.writeFile(passingTestPath, passingTestSource);
