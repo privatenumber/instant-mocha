@@ -4,6 +4,7 @@
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"outDir": "dist",
+		"types": ["mocha"],
 
 		// Node 12
 		"module": "commonjs",
