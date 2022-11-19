@@ -33,15 +33,17 @@ export const onData = (
 	stream: Readable,
 	match: string | RegExp,
 ) => new Promise<void>((resolve) => {
-	console.log('expect', { match });
+	let id = Math.floor(Math.random() * 10);
+	console.log(id, 'expect', { match });
 	const handler = (chunk: Buffer) => {
-		console.log({
+		console.log(id, {
 			chunk: chunk.toString(),
 		});
 
 		// eslint-disable-next-line unicorn/prefer-regexp-test
 		if (chunk.toString().match(match)) {
 			stream.off('data', handler);
+			console.log(id, 'resolved');
 			resolve();
 		}
 	};
