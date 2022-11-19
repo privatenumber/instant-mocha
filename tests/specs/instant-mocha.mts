@@ -132,7 +132,7 @@ export default testSuite(({ describe }) => {
 			// 		expect(imProcess.exitCode).toBe(0);
 			// 	});
 
-				test('watch tests', async () => {
+				test('watch tests', async ({ onTestFail }) => {
 					const fixture = await createFixture(fixturePath);
 					console.log({ fixturePath: fixture.path });
 
@@ -148,6 +148,11 @@ export default testSuite(({ describe }) => {
 							cwd: fixture.path,
 						},
 					);
+
+					onTestFail(() => {
+						console.log(instantMochaWatch);
+						process.exit();
+					});
 
 					const passingTestPath = path.join(fixture.path, './tests/passing-test.js');
 					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
