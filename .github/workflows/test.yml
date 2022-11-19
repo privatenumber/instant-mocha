@@ -40,5 +40,5 @@ jobs:
     - name: Test
       run: pnpm test
 
-    - name: Test v12
-      run: pnpm run --use-node-version=12.22.12 test
+    - name: Test v16
+      run: pnpm run --use-node-version=16.7.0 test
