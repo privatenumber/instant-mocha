@@ -9,7 +9,7 @@ import {
 } from '../utils.mjs'; // eslint-disable-line import/extensions
 
 const nodeConfigurations: [string, string[]][] = [
-	['Webpack 5', []],
+	// ['Webpack 5', []],
 	['Webpack 4', ['-r', path.resolve('tests/use-webpack4.js')]],
 ];
 
@@ -135,6 +135,7 @@ export default testSuite(({ describe }) => {
 				test('watch tests', async () => {
 					const fixture = await createFixture(fixturePath);
 					console.log({ fixturePath: fixture.path });
+
 					const instantMochaWatch = instantMocha(
 						[
 							'--webpackConfig',
@@ -161,6 +162,12 @@ export default testSuite(({ describe }) => {
 
 					await onData(instantMochaWatch.stdout, '3 passing');
 
+					instantMochaWatch.stdout.on('data', (data) => {
+						console.log('stdout', data.toString());
+					});
+					instantMochaWatch.stderr.on('data', (data) => {
+						console.log('stderr', data.toString());
+					});
 					instantMochaWatch.kill();
 
 					await instantMochaWatch;
