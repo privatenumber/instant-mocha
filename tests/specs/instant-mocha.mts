@@ -161,7 +161,7 @@ export default testSuite(({ describe }) => {
 
 					await onData(instantMochaWatch.stdout, '3 passing');
 
-					instantMochaWatch.cancel();
+					instantMochaWatch.kill();
 
 					await instantMochaWatch;
 					await fixture.rm();
