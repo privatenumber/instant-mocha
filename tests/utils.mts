@@ -33,7 +33,7 @@ export const onData = (
 	stream: Readable,
 	match: string | RegExp,
 ) => new Promise<void>((resolve) => {
-	let id = Math.floor(Math.random() * 10);
+	let id = Math.floor(Math.random() * 100);
 	console.log(id, 'expect', { match });
 	const handler = (chunk: Buffer) => {
 		console.log(id, {

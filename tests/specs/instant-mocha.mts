@@ -10,7 +10,7 @@ import {
 
 const nodeConfigurations: [string, string[]][] = [
 	['Webpack 5', []],
-	// ['Webpack 4', ['-r', path.resolve('tests/use-webpack4.js')]],
+	['Webpack 4', ['-r', path.resolve('tests/use-webpack4.js')]],
 ];
 
 export default testSuite(({ describe }) => {
@@ -134,6 +134,7 @@ export default testSuite(({ describe }) => {
 
 				test('watch tests', async () => {
 					const fixture = await createFixture(fixturePath);
+					console.log({ fixturePath: fixture.path });
 					const instantMochaWatch = instantMocha(
 						[
 							'--webpackConfig',
