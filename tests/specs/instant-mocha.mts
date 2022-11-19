@@ -5,7 +5,7 @@ import { createFixture } from 'fs-fixture';
 import {
 	instantMocha,
 	fixturePath,
-	collectStdout,
+	onData,
 } from '../utils.mjs'; // eslint-disable-line import/extensions
 
 const nodeConfigurations: [string, string[]][] = [
@@ -133,7 +133,6 @@ export default testSuite(({ describe }) => {
 				});
 
 				test('watch tests', async () => {
-					const stdoutBuffers: Buffer[] = [];
 					const fixture = await createFixture(fixturePath);
 					const instantMochaWatch = instantMocha(
 						[
@@ -148,28 +147,20 @@ export default testSuite(({ describe }) => {
 						},
 					);
 
-					instantMochaWatch.stdout!.on('data', (data) => {
-						stdoutBuffers.push(data);
-					});
-
-					const stdoutPassing = await collectStdout(stdoutBuffers);
-					expect(stdoutPassing).toMatch('3 passing');
-
 					const passingTestPath = path.join(fixture.path, './tests/passing-test.js');
 					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
 
-					const collecting = collectStdout(stdoutBuffers);
+					await onData(instantMochaWatch.stdout, '3 passing');
+
 					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
-					const stdoutFailing = await collecting;
-					expect(stdoutFailing).toMatch('2 passing');
+
+					await onData(instantMochaWatch.stdout, '2 passing');
 
 					await fs.promises.writeFile(passingTestPath, passingTestSource);
 
-					const stdoutPassing2 = await collectStdout(stdoutBuffers);
-					expect(stdoutPassing2).toMatch('3 passing');
+					await onData(instantMochaWatch.stdout, '3 passing');
 
 					instantMochaWatch.cancel();
-
 					await fixture.rm();
 				}, 20_000);
 			});
