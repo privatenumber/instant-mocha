@@ -175,7 +175,11 @@ export default testSuite(({ describe }) => {
 					await onData(instantMochaWatch.stdout, '3 passing');
 					results.push('1');
 
-					fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
+					results.push(`writing to ${passingTestPath}`);
+					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
+					fs.promises.readFile(passingTestPath, 'utf8').then(d => {
+						results.push(d);
+					});
 					await onData(instantMochaWatch.stdout, '2 passing');
 					results.push('2');
 
