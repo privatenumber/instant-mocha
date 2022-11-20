@@ -7,7 +7,6 @@ const baseConfig = {
 		__dirname: true,
 	},
 	watchOptions: {
-		aggregateTimeout: 1,
 		poll: true,
 	},
 	resolve: {

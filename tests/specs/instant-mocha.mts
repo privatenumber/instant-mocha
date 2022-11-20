@@ -160,6 +160,10 @@ export default testSuite(({ describe }) => {
 
 					await onData(instantMochaWatch.stdout, '3 passing');
 
+					await new Promise((resolve) => {
+						setTimeout(resolve, 1000);
+					});
+
 					fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 					await onData(instantMochaWatch.stdout, '2 passing');
 
