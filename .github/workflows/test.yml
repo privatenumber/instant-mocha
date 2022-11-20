@@ -40,5 +40,5 @@ jobs:
     - name: Test v16
       run: pnpm run --use-node-version=16.7.0 test
 
-    # - name: Lint
-    #   run: pnpm lint
+    - name: Lint
+      run: pnpm lint
