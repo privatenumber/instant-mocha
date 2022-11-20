@@ -163,7 +163,7 @@ export default testSuite(({ describe }) => {
 
 						console.log(results);
 
-						console.log(Buffer.concat(out).toString());
+						console.log({ out: Buffer.concat(out).toString() });
 
 						// eslint-disable-next-line unicorn/no-process-exit
 						process.exit();
