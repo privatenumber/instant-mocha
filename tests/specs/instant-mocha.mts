@@ -172,7 +172,7 @@ export default testSuite(({ describe }) => {
 
 					await instantMochaWatch;
 					await fixture.rm();
-				}, 30_000);
+				}, 40_000);
 			});
 		}
 	});
