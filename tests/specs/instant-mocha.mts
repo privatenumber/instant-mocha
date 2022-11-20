@@ -176,6 +176,9 @@ export default testSuite(({ describe }) => {
 					results.push('1');
 
 					results.push(`writing to ${passingTestPath}`);
+					await new Promise((resolve) => {
+						setTimeout(resolve, 1000);
+					});
 					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
 					fs.promises.readFile(passingTestPath, 'utf8').then(d => {
 						results.push(d);
@@ -192,7 +195,7 @@ export default testSuite(({ describe }) => {
 					results.push('4');
 
 					await fixture.rm();
-				}, 40_000);
+				}, 20_000);
 			});
 		}
 	});
