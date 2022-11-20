@@ -150,6 +150,8 @@ export default testSuite(({ describe }) => {
 
 					onTestFail(() => {
 						console.log(instantMochaWatch);
+
+						// eslint-disable-next-line unicorn/no-process-exit
 						process.exit();
 					});
 
