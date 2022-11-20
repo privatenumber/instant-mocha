@@ -6,10 +6,6 @@ const baseConfig = {
 	node: {
 		__dirname: true,
 	},
-	watchOptions: {
-		aggregateTimeout: 2000,
-		poll: 500,
-	},
 	resolve: {
 		alias: {
 			'~': path.resolve(__dirname, 'src/'),
