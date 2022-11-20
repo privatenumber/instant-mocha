@@ -134,7 +134,6 @@ export default testSuite(({ describe }) => {
 
 				test('watch tests', async ({ onTestFail }) => {
 					const fixture = await createFixture(fixturePath);
-					console.log({ fixturePath: fixture.path });
 
 					const instantMochaWatch = instantMocha(
 						[
@@ -167,12 +166,6 @@ export default testSuite(({ describe }) => {
 
 					await onData(instantMochaWatch.stdout, '3 passing');
 
-					instantMochaWatch.stdout.on('data', (data) => {
-						console.log('stdout', data.toString());
-					});
-					instantMochaWatch.stderr.on('data', (data) => {
-						console.log('stderr', data.toString());
-					});
 					instantMochaWatch.kill();
 
 					await instantMochaWatch;
