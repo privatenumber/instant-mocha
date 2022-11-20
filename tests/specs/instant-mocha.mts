@@ -148,22 +148,8 @@ export default testSuite(({ describe }) => {
 						},
 					);
 
-					const out: Buffer[] = [];
-					instantMochaWatch.stdout.on('data', (data) => {
-						out.push(data);
-					});
-					instantMochaWatch.stderr.on('data', (data) => {
-						out.push(data);
-					});
-
-					const results: string[] = [];
-
 					onTestFail(() => {
 						console.log(instantMochaWatch);
-
-						console.log(results);
-
-						console.log({ out: Buffer.concat(out).toString() });
 
 						// eslint-disable-next-line unicorn/no-process-exit
 						process.exit();
@@ -173,26 +159,17 @@ export default testSuite(({ describe }) => {
 					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
 
 					await onData(instantMochaWatch.stdout, '3 passing');
-					results.push('1');
 
-					results.push(`writing to ${passingTestPath}`);
-					await new Promise((resolve) => {
-						setTimeout(resolve, 1000);
-					});
+					// await new Promise((resolve) => setTimeout(resolve, 1000));
+
 					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
-					fs.promises.readFile(passingTestPath, 'utf8').then(d => {
-						results.push(d);
-					});
 					await onData(instantMochaWatch.stdout, '2 passing');
-					results.push('2');
 
 					fs.promises.writeFile(passingTestPath, passingTestSource);
 					await onData(instantMochaWatch.stdout, '3 passing');
-					results.push('3');
 
 					instantMochaWatch.kill();
 					await instantMochaWatch;
-					results.push('4');
 
 					await fixture.rm();
 				}, 20_000);
