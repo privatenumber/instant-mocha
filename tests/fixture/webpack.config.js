@@ -6,9 +6,6 @@ const baseConfig = {
 	node: {
 		__dirname: true,
 	},
-	watchOptions: {
-		poll: true,
-	},
 	resolve: {
 		alias: {
 			'~': path.resolve(__dirname, 'src/'),
