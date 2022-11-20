@@ -148,8 +148,12 @@ export default testSuite(({ describe }) => {
 						},
 					);
 
+					const results: string[] = [];
+
 					onTestFail(() => {
 						console.log(instantMochaWatch);
+
+						console.log(results);
 
 						// eslint-disable-next-line unicorn/no-process-exit
 						process.exit();
@@ -159,18 +163,20 @@ export default testSuite(({ describe }) => {
 					const passingTestSource = await fs.promises.readFile(passingTestPath, 'utf8');
 
 					await onData(instantMochaWatch.stdout, '3 passing');
+					results.push('1');
 
 					await fs.promises.writeFile(passingTestPath, passingTestSource.replace('=== 3', '=== 4'));
-
 					await onData(instantMochaWatch.stdout, '2 passing');
+					results.push('2');
 
 					await fs.promises.writeFile(passingTestPath, passingTestSource);
-
 					await onData(instantMochaWatch.stdout, '3 passing');
+					results.push('3');
 
 					instantMochaWatch.kill();
-
 					await instantMochaWatch;
+					results.push('4');
+
 					await fixture.rm();
 				}, 40_000);
 			});
