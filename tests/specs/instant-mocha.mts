@@ -147,6 +147,14 @@ export default testSuite(({ describe }) => {
 							cwd: fixture.path,
 						},
 					);
+					
+					const out: Buffer[] = [];
+					instantMochaWatch.stdout.on('data', (data) => {
+						out.push(data);
+					});
+					instantMochaWatch.stderr.on('data', (data) => {
+						out.push(data);
+					});
 
 					const results: string[] = [];
 
@@ -154,6 +162,8 @@ export default testSuite(({ describe }) => {
 						console.log(instantMochaWatch);
 
 						console.log(results);
+
+						console.log(Buffer.concat(out).toString());
 
 						// eslint-disable-next-line unicorn/no-process-exit
 						process.exit();
