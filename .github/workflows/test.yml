@@ -31,9 +31,6 @@ jobs:
         version: 7
         run_install: true
 
-    - name: Lint
-      run: pnpm lint
-
     - name: Build
       run: pnpm build
 
@@ -42,3 +39,6 @@ jobs:
 
     - name: Test v16
       run: pnpm run --use-node-version=16.7.0 test
+
+    - name: Lint
+      run: pnpm lint

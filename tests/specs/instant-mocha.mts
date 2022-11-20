@@ -147,7 +147,7 @@ export default testSuite(({ describe }) => {
 							cwd: fixture.path,
 						},
 					);
-					
+
 					const out: Buffer[] = [];
 					instantMochaWatch.stdout.on('data', (data) => {
 						out.push(data);
