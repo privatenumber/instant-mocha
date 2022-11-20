@@ -14,7 +14,7 @@ const nodeConfigurations: [string, string[]][] = [
 ];
 
 export default testSuite(({ describe }) => {
-	describe('instant-mocha', ({ test }) => {
+	describe('instant-mocha', async ({ test }) => {
 		test('top level await', async () => {
 			const { exitCode, stdout } = await instantMocha([
 				'--webpackConfig',
@@ -27,7 +27,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		for (const [label, nodeOptions] of nodeConfigurations) {
-			describe(label, ({ test }) => {
+			await describe(label, ({ test }) => {
 				test('running tests', async () => {
 					const { exitCode, stdout } = await instantMocha(
 						[
