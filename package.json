@@ -33,6 +33,9 @@
 	"lint-staged": {
 		"*.{js,ts}": "pnpm lint"
 	},
+	"engines": {
+		"node": ">=16.7.0"
+	},
 	"peerDependencies": {
 		"mocha": "8 || 9 || 10",
 		"webpack": "4 || 5"
