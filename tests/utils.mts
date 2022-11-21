@@ -6,7 +6,7 @@ import { bin } from '../package.json';
 const instantMochaPath = path.resolve(bin);
 export const fixturePath = path.resolve('tests/fixture');
 
-const nodeOptions = (
+const nodeOptionsBase = (
 	process.version.startsWith('v18.')
 		? ['--openssl-legacy-provider']
 		: []
@@ -23,8 +23,9 @@ export const instantMocha = (
 		...options,
 		reject: false,
 		nodeOptions: [
-			...nodeOptions,
-			...options.nodeOptions ?? [],
+			...nodeOptionsBase,
+			'--require',
+			path.resolve('tests/realias.js'),
 		],
 	},
 );
