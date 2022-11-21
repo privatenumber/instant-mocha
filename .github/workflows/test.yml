@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-    branches: [develop]
+    branches: develop
   pull_request:
     branches: [master, develop]
 
@@ -10,25 +10,35 @@ jobs:
   test:
     name: Test
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [12.x, 14.x]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: npx ci
-      - name: Build
-        run: npm run build
-      - name: Lint
-        run: npm run lint
-      - name: Test
-        run: npm run test --if-present
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.2.2
+      with:
+        version: 7
+        run_install: true
+
+    - name: Build
+      run: pnpm build
+
+    - name: Test
+      run: pnpm test
+
+    - name: Test v16
+      run: pnpm run --use-node-version=16.7.0 test
+
+    - name: Lint
+      run: pnpm lint

@@ -14,7 +14,7 @@ Build tests with Webpack and run them with Mocha in one command
 - Source-map support
 - Builds and runs in-memory
 - Inherits Mocha CLI
-- Supports Webpack 5 & Mocha 8
+- Supports Webpack 5 + Mocha 8, 9, & 10
 
 _How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) / [mochapack](https://github.com/sysgears/mochapack)?_ Answered in the [FAQ](#how-is-it-different-from-mocha-webpack-or-its-fork-mochapack).
 
@@ -29,17 +29,19 @@ Note: `webpack` and `mocha` are peer-dependencies so you can provide any version
 
 ## 👨‍🏫 Usage
 ```sh
-instant-mocha --webpack-config <Webpack config path> [test paths/globs...]
+instant-mocha [test paths/globs...]
 ```
 
 You can either use [`npx`](https://www.npmjs.com/package/npx) (eg. `npx instant-mocha ...`) or add it to [`package.json` scripts](https://nodejs.dev/learn/the-package-json-guide) (eg. `npm test`) to invoke it. 
 
 ### Options
-#### --webpack-config
-Path to the Webpack config.
-
 #### -w, --watch
 Watch mode. Re-compiles the Webpack build and re-run tests on file-changes.
+
+#### --webpack-config
+Default: `webpack.config.js`
+
+Path to the Webpack config.
 
 #### Supports all options from Mocha CLI
 For more info, run:
@@ -72,7 +74,7 @@ It's recommended to externalize what you can in your [Webpack config](https://we
 
 _First of all, major thanks to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) for the original implementation and serving the community._
 
-This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support (and neither does its fork, [mochapack](https://github.com/sysgears/mochapack)).
+This project was created from scratch because `mocha-webpack` is no longer maintained and doesn't have Webpack 5 support.
 
 Some notable improvements include:
 - **Written in TypeScript** whereas `mocha-webpack` uses [Flow](https://github.com/facebook/flow).
