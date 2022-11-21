@@ -2,11 +2,11 @@ import path from 'path';
 import assert from 'assert';
 import collectFiles from 'mocha/lib/cli/collect-files.js';
 import AggregateError from 'aggregate-error';
-import ansiEscapes from 'ansi-escapes';
 import { InstantMochaOptions } from './types';
 import { runMocha } from './lib/mocha';
 import { createWebpackCompiler } from './lib/webpack';
 import { getWebpackConfig } from './lib/get-webpack-config';
+import { clearTerminal } from './lib/clear-terminal';
 
 export default async function instantMocha(
 	options: InstantMochaOptions,
@@ -33,7 +33,7 @@ export default async function instantMocha(
 		webpackConfig.plugins.unshift({
 			apply(compiler) {
 				compiler.hooks.watchRun.tap('InstantMocha', () => {
-					process.stdout.write(ansiEscapes.clearTerminal);
+					process.stdout.write(clearTerminal);
 				});
 			},
 		});
