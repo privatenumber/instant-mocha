@@ -14,7 +14,7 @@ Build tests with Webpack and run them with Mocha in one command
 - Source-map support
 - Builds and runs in-memory
 - Inherits Mocha CLI
-- Supports Webpack 5 & Mocha 8
+- Supports Webpack 5 + Mocha 8, 9, & 10
 
 _How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) / [mochapack](https://github.com/sysgears/mochapack)?_ Answered in the [FAQ](#how-is-it-different-from-mocha-webpack-or-its-fork-mochapack).
 
@@ -29,7 +29,7 @@ Note: `webpack` and `mocha` are peer-dependencies so you can provide any version
 
 ## 👨‍🏫 Usage
 ```sh
-instant-mocha --webpack-config <Webpack config path> [test paths/globs...]
+instant-mocha [test paths/globs...]
 ```
 
 You can either use [`npx`](https://www.npmjs.com/package/npx) (eg. `npx instant-mocha ...`) or add it to [`package.json` scripts](https://nodejs.dev/learn/the-package-json-guide) (eg. `npm test`) to invoke it. 
