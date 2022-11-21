@@ -10,7 +10,7 @@ jobs:
   test:
     name: Test
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     strategy:
       matrix:
@@ -34,13 +34,11 @@ jobs:
     - name: Build
       run: pnpm build
 
-    - name: Lint
-      run: pnpm lint
-
     - name: Test
-      env:
-        NODE_OPTIONS: --openssl-legacy-provider
       run: pnpm test
 
-    - name: Test v12
-      run: pnpm run --use-node-version=12.22.12 test
+    - name: Test v16
+      run: pnpm run --use-node-version=16.7.0 test
+
+    - name: Lint
+      run: pnpm lint

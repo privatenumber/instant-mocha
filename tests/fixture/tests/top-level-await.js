@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { last } from 'lodash-es';
+import { last } from 'array-last';
 import { add } from '~/top-level-await';
 
 it('should add', () => {
