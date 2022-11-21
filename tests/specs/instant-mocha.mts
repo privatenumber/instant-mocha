@@ -58,6 +58,20 @@ export default testSuite(({ describe }) => {
 						expect(exitCode).toBe(0);
 					});
 
+					test('default config', async () => {
+						const { exitCode, stdout } = await instantMocha(
+							[
+								'tests/passing-test.js',
+							],
+							{
+								env: { ALIASES },
+							},
+						);
+
+						expect(stdout).toMatch('3 passing');
+						expect(exitCode).toBe(0);
+					});
+
 					test('exit-code on failure', async () => {
 						const { exitCode, stdout } = await instantMocha(
 							[

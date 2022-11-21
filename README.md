@@ -35,11 +35,13 @@ instant-mocha --webpack-config <Webpack config path> [test paths/globs...]
 You can either use [`npx`](https://www.npmjs.com/package/npx) (eg. `npx instant-mocha ...`) or add it to [`package.json` scripts](https://nodejs.dev/learn/the-package-json-guide) (eg. `npm test`) to invoke it. 
 
 ### Options
-#### --webpack-config
-Path to the Webpack config.
-
 #### -w, --watch
 Watch mode. Re-compiles the Webpack build and re-run tests on file-changes.
+
+#### --webpack-config
+Default: `webpack.config.js`
+
+Path to the Webpack config.
 
 #### Supports all options from Mocha CLI
 For more info, run:
