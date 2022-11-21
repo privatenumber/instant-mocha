@@ -14,7 +14,9 @@ const argv = loadOptions(process.argv.slice(2));
 yargs()
 	.scriptName('instant-mocha')
 	.command({
+		// Inherit Mocha CLI
 		...run,
+
 		command: ['$0 [spec..]'],
 		describe: 'Build tests with Webpack and run them with Mocha',
 		builder(cli) {
@@ -55,6 +57,7 @@ yargs()
 			description: 'Path to Webpack configuration',
 			group: INSTANT_MOCHA_OPTIONS_GROUP,
 			type: 'string',
+			default: 'webpack.config.js',
 		},
 		watch: {
 			description: 'Watch mode',
@@ -64,9 +67,9 @@ yargs()
 			description: 'Mode passed to webpack development|production',
 			group: INSTANT_MOCHA_OPTIONS_GROUP,
 			type: 'string',
+			alias: 'm',
 		},
 	})
-	.alias('m', 'mode')
 	.help('help', 'Show usage information & exit')
 	.alias('help', 'h')
 	.version('version', 'Show version number & exit', version)
