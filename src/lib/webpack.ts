@@ -28,7 +28,7 @@ export function createWebpackCompiler(
 	};
 
 	// Turn off any separate runtime chunks since only "main.js" is output and imported by mocha
-	if (config?.optimization?.runtimeChunk) {
+	if (config.optimization?.runtimeChunk) {
 		config.optimization.runtimeChunk = undefined;
 	}
 
