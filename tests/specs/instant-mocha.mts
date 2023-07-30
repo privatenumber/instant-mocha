@@ -21,6 +21,25 @@ const mochaVersions: [string, AliasMap][] = [
 	['Mocha 8', { mocha: 'mocha8' }],
 ];
 
+const devtoolTestData = [
+	[undefined, [
+		/\/tests\/failing-test.js\?:9:47/,
+		/\/tests\/failing-test.js\?:16:47/,
+	]],
+	['eval-source-map', [
+		/\/tests\/failing-test.js:9:47/,
+		/\/tests\/failing-test.js:16:47/,
+	]],
+	['source-map', [
+		/\/tests\/failing-test.js:5:8/,
+		/\/tests\/failing-test.js:12:8/,
+	]],
+	['inline-source-map', [
+		/\/tests\/failing-test.js:5:8/,
+		/\/tests\/failing-test.js:12:8/,
+	]],
+];
+
 export default testSuite(({ describe }) => {
 	describe('instant-mocha', ({ test }) => {
 		test('top level await', async () => {
@@ -217,6 +236,45 @@ export default testSuite(({ describe }) => {
 
 						await fixture.rm();
 					});
+
+					for (const [devtool, matches] of devtoolTestData) {
+						test(`source map support with devtool: ${devtool}`, async () => {
+							const fixture = await createFixture(fixturePath);
+
+							const sourceWebpackConfigPath = path.join(fixture.path, './webpack.config.js');
+
+							const sourceWebpackConfigSources = await fs.promises.readFile(sourceWebpackConfigPath, 'utf8');
+
+							const updatedWebpackConfigSources = sourceWebpackConfigSources.replace(
+								'mode: \'production\',',
+								devtool === undefined ? 'mode: \'development\',' : `mode: 'development', devtool: '${devtool}',`,
+							);
+
+							const updatedWebpackConfigPath = path.join(fixture.path, `./webpack.config.source-map-support-${devtool}.js`);
+
+							try {
+								await fs.promises.writeFile(updatedWebpackConfigPath, updatedWebpackConfigSources);
+
+								const { stdout } = await instantMocha(
+									[
+										'--webpackConfig',
+										updatedWebpackConfigPath,
+										'tests/failing-test.js',
+									],
+									{
+										env: { ALIASES },
+										cwd: fixture.path,
+									},
+								);
+
+								for (const match of matches) {
+									expect(stdout).toMatch(match);
+								}
+							} finally {
+								await fixture.rm();
+							}
+						});
+					}
 				});
 			}
 		}
