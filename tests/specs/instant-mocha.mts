@@ -240,25 +240,27 @@ export default testSuite(({ describe }) => {
 					for (const [devtool, matches] of devtoolTestData) {
 						test(`source map support with devtool: ${devtool}`, async () => {
 							const fixture = await createFixture(fixturePath);
-
-							const sourceWebpackConfigPath = path.join(fixture.path, './webpack.config.js');
-
-							const sourceWebpackConfigSources = await fs.promises.readFile(sourceWebpackConfigPath, 'utf8');
-
-							const updatedWebpackConfigSources = sourceWebpackConfigSources.replace(
-								'mode: \'production\',',
-								devtool === undefined ? 'mode: \'development\',' : `mode: 'development', devtool: '${devtool}',`,
+							await fixture.writeFile(
+								'webpack.config.js',
+								`
+								const path = require('path');
+								module.exports = {
+									mode: 'development',
+									devtool: ${JSON.stringify(devtool)},
+									resolve: {
+										alias: {
+											'~': path.resolve(__dirname, 'src/'),
+										},
+									},
+								};
+								`,
 							);
 
-							const updatedWebpackConfigPath = path.join(fixture.path, `./webpack.config.source-map-support-${devtool}.js`);
-
 							try {
-								await fs.promises.writeFile(updatedWebpackConfigPath, updatedWebpackConfigSources);
-
 								const { stdout } = await instantMocha(
 									[
 										'--webpackConfig',
-										updatedWebpackConfigPath,
+										'webpack.config.js',
 										'tests/failing-test.js',
 									],
 									{
