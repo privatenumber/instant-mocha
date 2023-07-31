@@ -12,7 +12,7 @@ mfs.join = path.join;
 let id: number;
 
 export const mRequire = (modulePath: string): any => {
-	const require =createFsRequire(mfs, {
+	const require = createFsRequire(mfs, {
 		fs: true,
 	});
 
