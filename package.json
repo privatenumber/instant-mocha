@@ -44,7 +44,6 @@
 		"@cspotcode/source-map-support": "^0.8.1",
 		"fs-require": "^1.6.0",
 		"memfs": "^3.5.0",
-		"source-map-url": "^0.4.1",
 		"yargs": "^16.2.0"
 	},
 	"devDependencies": {

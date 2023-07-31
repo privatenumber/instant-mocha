@@ -2,7 +2,6 @@ import path from 'path';
 import { createFsFromVolume, Volume } from 'memfs';
 import { createFsRequire } from 'fs-require';
 import sourceMapSupport from '@cspotcode/source-map-support';
-import sourceMappingURL from 'source-map-url';
 
 export const mfs = createFsFromVolume(new Volume());
 
@@ -39,29 +38,5 @@ sourceMapSupport.install({
 		if (mfs.existsSync(filteredFilePath)) {
 			return mfs.readFileSync(filteredFilePath).toString();
 		}
-	},
-	retrieveSourceMap(sourceFilePath: string) {
-		const filteredSourceFilePath = removeFsRequirePrefix(sourceFilePath);
-
-		if (mfs.existsSync(filteredSourceFilePath)) {
-			const sourceFileContent = mfs.readFileSync(filteredSourceFilePath).toString();
-			const sourceMapFilePath = sourceMappingURL.getFrom(sourceFileContent);
-
-			if (sourceMapFilePath === null) {
-				return null;
-			}
-
-			const parentDirectory = path.dirname(filteredSourceFilePath);
-			const sourceMapFileFullPath = `${parentDirectory}/${sourceMapFilePath}`;
-
-			if (mfs.existsSync(sourceMapFileFullPath)) {
-				return {
-					url: sourceFilePath,
-					map: mfs.readFileSync(sourceMapFileFullPath).toString(),
-				};
-			}
-		}
-
-		return null;
 	},
 });
