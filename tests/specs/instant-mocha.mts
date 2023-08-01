@@ -21,6 +21,25 @@ const mochaVersions: [string, AliasMap][] = [
 	['Mocha 8', { mocha: 'mocha8' }],
 ];
 
+const devtoolTestData = [
+	[undefined, [
+		/\/tests\/failing-test.js\?:9:47/,
+		/\/tests\/failing-test.js\?:16:47/,
+	]],
+	['eval-source-map', [
+		/\/tests\/failing-test.js:9:47/,
+		/\/tests\/failing-test.js:16:47/,
+	]],
+	['source-map', [
+		/\/tests\/failing-test.js:5:8/,
+		/\/tests\/failing-test.js:12:8/,
+	]],
+	['inline-source-map', [
+		/\/tests\/failing-test.js:5:8/,
+		/\/tests\/failing-test.js:12:8/,
+	]],
+];
+
 export default testSuite(({ describe }) => {
 	describe('instant-mocha', ({ test }) => {
 		test('top level await', async () => {
@@ -217,6 +236,47 @@ export default testSuite(({ describe }) => {
 
 						await fixture.rm();
 					});
+
+					for (const [devtool, matches] of devtoolTestData) {
+						test(`source map support with devtool: ${devtool}`, async () => {
+							const fixture = await createFixture(fixturePath);
+							await fixture.writeFile(
+								'webpack.config.js',
+								`
+								const path = require('path');
+								module.exports = {
+									mode: 'development',
+									devtool: ${JSON.stringify(devtool)},
+									resolve: {
+										alias: {
+											'~': path.resolve(__dirname, 'src/'),
+										},
+									},
+								};
+								`,
+							);
+
+							try {
+								const { stdout } = await instantMocha(
+									[
+										'--webpackConfig',
+										'webpack.config.js',
+										'tests/failing-test.js',
+									],
+									{
+										env: { ALIASES },
+										cwd: fixture.path,
+									},
+								);
+
+								for (const match of matches) {
+									expect(stdout).toMatch(match);
+								}
+							} finally {
+								await fixture.rm();
+							}
+						});
+					}
 				});
 			}
 		}
