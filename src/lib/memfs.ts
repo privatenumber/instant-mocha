@@ -20,23 +20,17 @@ export const mRequire = (modulePath: string): any => {
 	return require(modulePath);
 };
 
-function removeFsRequirePrefix(filePath: string) {
-	const fsRequirePrefix = `fs-require://${id}/`;
-
-	if (filePath.startsWith(fsRequirePrefix)) {
-		return filePath.slice(fsRequirePrefix.length - 1);
-	}
-
-	return filePath;
-}
-
 sourceMapSupport.install({
 	environment: 'node',
 	retrieveFile(filePath: string) {
-		const filteredFilePath = removeFsRequirePrefix(filePath);
+		const fsRequirePrefix = `fs-require://${id}/`;
 
-		if (mfs.existsSync(filteredFilePath)) {
-			return mfs.readFileSync(filteredFilePath).toString();
+		if (filePath.startsWith(fsRequirePrefix)) {
+			filePath = filePath.slice(fsRequirePrefix.length - 1);
+		}
+
+		if (mfs.existsSync(filePath)) {
+			return mfs.readFileSync(filePath).toString();
 		}
 	},
 });
