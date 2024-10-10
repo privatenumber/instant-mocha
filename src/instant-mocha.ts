@@ -39,7 +39,7 @@ export default async function instantMocha(
 		});
 	}
 
-	const webpackCompiler = createWebpackCompiler(webpackConfig, testFiles);
+	const webpackCompiler = createWebpackCompiler(webpackConfig, testFiles.files);
 
 	if (options.watch) {
 		webpackCompiler.watch({}, (error, stats) => {
