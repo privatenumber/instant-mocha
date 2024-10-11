@@ -41,7 +41,7 @@ export default async function instantMocha(
 
 	const webpackCompiler = createWebpackCompiler(
 		webpackConfig,
-		Array.isArray(testFiles) ? testFiles : testFiles.files
+		Array.isArray(testFiles) ? testFiles : testFiles.files,
 	);
 
 	if (options.watch) {
