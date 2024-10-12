@@ -17,27 +17,27 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: '.nvmrc'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v3
-      with:
-        run_install: true
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          run_install: true
 
-    - name: Build
-      run: pnpm build
+      - name: Build
+        run: pnpm build
 
-    - name: Test
-      run: pnpm test
+      - name: Test
+        run: pnpm test
 
-    - name: Test v16
-      run: pnpm --use-node-version=16.7.0 tsx tests
+      - name: Test v16
+        run: pnpm --use-node-version=16.7.0 tsx tests
 
-    - name: Lint
-      run: pnpm lint
+      - name: Lint
+        run: pnpm lint
