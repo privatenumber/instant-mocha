@@ -19,6 +19,7 @@
 		"dist"
 	],
 	"bin": "dist/cli.js",
+	"packageManager": "pnpm@9.11.0",
 	"scripts": {
 		"prepare": "simple-git-hooks",
 		"lint": "eslint --cache .",
