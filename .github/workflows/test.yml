@@ -37,7 +37,7 @@ jobs:
       run: pnpm test
 
     - name: Test v16
-      run: pnpm run --use-node-version=16.7.0 test
+      run: pnpm --use-node-version=16.7.0 tsx tests
 
     - name: Lint
       run: pnpm lint

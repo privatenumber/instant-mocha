@@ -15,10 +15,6 @@ lerna-debug.log*
 # Output of 'npm pack'
 *.tgz
 
-# dotenv environment variables file
-.env
-.env.test
-
 # Distribution
 dist
 
