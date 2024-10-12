@@ -18,7 +18,10 @@ Build tests with Webpack and run them with Mocha in one command
 
 _How does it compare to [mocha-webpack](https://github.com/zinserjan/mocha-webpack) / [mochapack](https://github.com/sysgears/mochapack)?_ Answered in the [FAQ](#how-is-it-different-from-mocha-webpack-or-its-fork-mochapack).
 
-<sub>Support this project by ⭐️ starring and sharing it. [Follow me](https://github.com/privatenumber) to see what other cool projects I'm working on! ❤️</sub>
+<p align="center">
+	<a href="https://github.com/sponsors/privatenumber/sponsorships?tier_id=398771"><img width="412" src="https://raw.githubusercontent.com/privatenumber/sponsors/master/banners/assets/donate.webp"></a>
+	<a href="https://github.com/sponsors/privatenumber/sponsorships?tier_id=416984"><img width="412" src="https://raw.githubusercontent.com/privatenumber/sponsors/master/banners/assets/sponsor.webp"></a>
+</p>
 
 ## 🚀 Install
 ```sh
@@ -83,7 +86,10 @@ Some notable improvements include:
 - **Correct exit codes** Mocha and `mocha-webpack` returns the number of failed tests as the exit code. instant-mocha only uses exit code `1` for any test failures as per [Bash convention](https://tldp.org/LDP/abs/html/exitcodes.html).
 - **Smaller size** Reuses a lot from Webpack & Mocha so it's much lighter: [![instant-mocha install size](https://packagephobia.now.sh/badge?p=instant-mocha)](https://packagephobia.now.sh/result?p=instant-mocha) vs [![mocha-webpack install size](https://packagephobia.now.sh/badge?p=mocha-webpack)](https://packagephobia.now.sh/result?p=mocha-webpack)
 
-## 💼 License
-MIT © Hiroki Osame
+## Sponsors
 
-Logo made by <a href="https://www.flaticon.com/free-icon/instant-coffee_3063818" title="monkik">monkik</a>
+<p align="center">
+	<a href="https://github.com/sponsors/privatenumber">
+		<img src="https://cdn.jsdelivr.net/gh/privatenumber/sponsors/sponsorkit/sponsors.svg">
+	</a>
+</p>
