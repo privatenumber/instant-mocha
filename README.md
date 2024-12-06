@@ -54,7 +54,7 @@ instant-mocha --help
 
 ### Example
 ```sh
-instant-mocha ---webpack-config webpack.config.js --require setup.js 'tests/*.spec.js'
+instant-mocha --webpack-config webpack.config.js --require setup.js 'tests/*.spec.js'
 ```
 - Load Webpack config from `webpack.config.js`
 - Load setup script from `setup.js`. _Note, this is not apart of the build and is loaded directly from Node.js_
