@@ -23,7 +23,7 @@ export function createWebpackCompiler(
 		// For Node.js env
 		// https://webpack.js.org/configuration/output/#outputglobalobject
 		globalObject: 'this',
-
+		module: undefined,
 		libraryTarget: 'commonjs2',
 	};
 
