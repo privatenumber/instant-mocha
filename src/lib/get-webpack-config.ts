@@ -1,6 +1,7 @@
 import assert from 'assert';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
+import { types } from 'util';
 import webpack from 'webpack';
 import { InstantMochaOptions, WebpackEnvironmentOptions, WebpackArgvOptions } from '../types';
 
@@ -17,22 +18,24 @@ function importESM(specifier: string) {
 }
 
 async function loadWebpackConfig(webpackConfigPath: string) {
+	let webpackConfig;
 	try {
 		// eslint-disable-next-line node/global-require
-		return require(webpackConfigPath);
+		webpackConfig = require(webpackConfigPath);
 	} catch (error) {
 		// This error code is only available on versions of Node.js supporting ESM
-		if (error.code === 'ERR_REQUIRE_ESM') {
+		if (error.code === 'ERR_REQUIRE_ESM' || error.code === 'ERR_REQUIRE_ASYNC_MODULE') {
 			if (process.platform === 'win32') {
 				webpackConfigPath = pathToFileURL(webpackConfigPath).href;
 			}
 
-			const { default: webpackConfig } = await importESM(webpackConfigPath);
-			return webpackConfig;
+			webpackConfig = await importESM(webpackConfigPath);
+		} else {
+			throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
 		}
-
-		throw new Error(`Faild to load Webpack configuration: ${webpackConfigPath}`);
 	}
+
+	return types.isModuleNamespaceObject(webpackConfig) ? webpackConfig.default : webpackConfig;
 }
 
 export async function getWebpackConfig(

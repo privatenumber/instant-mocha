@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
 import {
@@ -42,6 +43,37 @@ const devtoolTestData = [
 
 export default testSuite(({ describe }) => {
 	describe('instant-mocha', ({ test }) => {
+		test('esm config with top-level await and async function', async () => {
+			const configUrl = pathToFileURL(path.join(fixturePath, 'webpack.config.esm.mjs')).href;
+			const fixture = await createFixture({
+				'config.mjs': `import config from ${JSON.stringify(configUrl)}; await Promise.resolve(); export default async () => config;`,
+			});
+			try {
+				const { exitCode, stdout } = await instantMocha([
+					'--webpackConfig', path.join(fixture.path, 'config.mjs'), 'tests/passing-test.js',
+				]);
+				expect(stdout).toMatch('3 passing');
+				expect(exitCode).toBe(0);
+			} finally {
+				await fixture.rm();
+			}
+		});
+
+		test('commonjs config with default and interop markers is not unwrapped', async () => {
+			const fixture = await createFixture({
+				'config.cjs': 'module.exports = { default: {} }; Object.defineProperty(module.exports, "__esModule", { value: true }); module.exports[Symbol.toStringTag] = "Module";',
+			});
+			try {
+				const { exitCode, stderr } = await instantMocha([
+					'--webpackConfig', path.join(fixture.path, 'config.cjs'), 'tests/passing-test.js',
+				]);
+				expect(exitCode).toBe(1);
+				expect(stderr).toMatch("unknown property 'default'");
+			} finally {
+				await fixture.rm();
+			}
+		});
+
 		test('top level await', async () => {
 			const { exitCode, stdout } = await instantMocha([
 				'--webpackConfig',
